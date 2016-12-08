@@ -25,7 +25,7 @@ public final class NetworkUtils {
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
     private static final String POSTER_SIZE = "w342";
     private static final String API_PARAM = "api_key";
-    private static final String API_KEY = "DELETED FOR SECURITY REASONS";
+    private static final String API_KEY = MOVIE_DB_KEY.KEY;
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String POPULAR_PATH = "popular";
     private static final String TOPRATED_PATH = "top_rated";
