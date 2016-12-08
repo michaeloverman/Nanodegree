@@ -8,3 +8,5 @@
 /captures
 .externalNativeBuild
 /app/src/main/java/tech/michaeloverman/android/popularmovies/utilities/MOVIE_DB_KEY.java
+libs/
+src/main/res/drawable/
