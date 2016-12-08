@@ -22,9 +22,37 @@ public final class MovieDBUtils {
 
     private static final String TAG = MovieDBUtils.class.getSimpleName();
 
+    private static final String RESULTS       = "results";
+    private static final String ID            = "id";
+    private static final String TITLE         = "original_title";
+    private static final String SYNOPSIS      = "overview";
+    private static final String RATING        = "vote_average";
+    private static final String RELEASE       = "release_date";
+    private static final String POSTER_PATH   = "poster_path";
+    private static final String DURATION      = "runtime";
+    private static final String MESSAGE_CODE  = "cod";
+//        private static final String TOTAL_RESULTS = "total_results";
+
     /* TODO: Figure out a way to set this value in a setting or menu thing. */
     private static int NUM_MOVIES_TO_FETCH = 100;
 
+
+    public static Movie getSingleMovieFromJson(Context context, String movieJsonString)
+            throws JSONException {
+        if(movieJsonString == null || movieJsonString.equals("") ) Log.d(TAG, "JSON String empty");
+
+        JSONObject movie = new JSONObject(movieJsonString);
+
+        Movie.Builder builder = new Movie.Builder(movie.getInt(ID))
+                .posterUrl(movie.getString(POSTER_PATH))
+                .title(movie.getString(TITLE))
+                .synopsis(movie.getString(SYNOPSIS))
+                .rating(movie.getString(RATING))
+                .releaseDate(movie.getString(RELEASE))
+                .duration(movie.getInt(DURATION));
+
+        return builder.build();
+    }
     /**
      * This method parses JSON from theMovieDB. I am including context in the constructor now,
      * so that if it is eventually decided to make the Release Date conform to local presentation
@@ -39,16 +67,6 @@ public final class MovieDBUtils {
             throws JSONException {
 
         if(moviesJsonString == null || moviesJsonString.equals("") ) Log.d(TAG, "JSON String empty");
-
-        final String RESULTS       = "results";
-        final String ID            = "id";
-        final String TITLE         = "original_title";
-        final String SYNOPSIS      = "overview";
-        final String RATING        = "vote_average";
-        final String RELEASE       = "release_date";
-        final String POSTER_PATH   = "poster_path";
-        final String MESSAGE_CODE  = "cod";
-//        final String TOTAL_RESULTS = "total_results";
 
         Movie[] movies = null;
 
@@ -81,11 +99,12 @@ public final class MovieDBUtils {
             JSONObject movie = moviesArray.getJSONObject(i);
 
             Movie.Builder builder = new Movie.Builder(movie.getInt(ID))
-                    .posterUrl(movie.getString(POSTER_PATH))
-                    .title(movie.getString(TITLE))
-                    .synopsis(movie.getString(SYNOPSIS))
-                    .rating(movie.getString(RATING))
-                    .releaseDate(movie.getString(RELEASE));
+                    .posterUrl(movie.getString(POSTER_PATH));
+//                    .title(movie.getString(TITLE))
+//                    .synopsis(movie.getString(SYNOPSIS))
+//                    .rating(movie.getString(RATING))
+//                    .releaseDate(movie.getString(RELEASE))
+//                    .duration(movie.getInt(DURATION));
 
             movies[i] = builder.build();
         }

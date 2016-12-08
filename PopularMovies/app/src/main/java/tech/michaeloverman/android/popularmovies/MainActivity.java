@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         implements ThumbnailAdapter.ThumbnailOnClickHandler {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int SPAN_COUNT = 3;
+    private static final int SPAN_COUNT = 2;
 //    private static final String EXTRA_MOVIE = "extra_movie";
 
     private RecyclerView mRecyclerView;
@@ -30,10 +33,14 @@ public class MainActivity extends AppCompatActivity
     private TextView mErrorMessage;
     private ProgressBar mLoadingIndicator;
 
+    private SearchCriteria mCurrentSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mCurrentSearch = SearchCriteria.POPULAR;
 
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
 
@@ -52,10 +59,42 @@ public class MainActivity extends AppCompatActivity
         loadMovies();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.popular:
+                mCurrentSearch = SearchCriteria.POPULAR;
+                break;
+            case R.id.rated:
+                mCurrentSearch = SearchCriteria.TOPRATED;
+                break;
+            case R.id.current:
+                mCurrentSearch = SearchCriteria.NOWPLAYING;
+                break;
+            case R.id.upcoming:
+                mCurrentSearch = SearchCriteria.UPCOMING;
+                break;
+            default:
+                mCurrentSearch = SearchCriteria.POPULAR;
+        }
+        loadMovies();
+        return true;
+    }
+
     private void loadMovies() {
         /* TODO: Make this get the search criteria from a menu item */
-        SearchCriteria criteria = SearchCriteria.POPULAR;
-        new GetMoviesTask().execute(criteria);
+
+        new GetMoviesTask().execute(mCurrentSearch);
     }
 
     private void showMoviePosters() {

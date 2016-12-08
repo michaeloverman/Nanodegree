@@ -5,5 +5,5 @@ package tech.michaeloverman.android.popularmovies;
  */
 
 public enum SearchCriteria {
-    TOPRATED, POPULAR
+    TOPRATED, POPULAR, NOWPLAYING, UPCOMING
 }

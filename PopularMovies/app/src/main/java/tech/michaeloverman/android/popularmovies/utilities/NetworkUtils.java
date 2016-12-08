@@ -23,12 +23,14 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/";
-    private static final String POSTER_SIZE = "w185";
+    private static final String POSTER_SIZE = "w342";
     private static final String API_PARAM = "api_key";
-    private static final String API_KEY = "REMOVED FOR SECURITY REASONS";
+    private static final String API_KEY = "5b976994bbbba17e3b2e4d2431b5fc2b";
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String POPULAR_PATH = "popular";
     private static final String TOPRATED_PATH = "top_rated";
+    private static final String UPCOMING_PATH = "upcoming";
+    private static final String NOWPLAYING_PATH = "now_playing";
 
     public static String buildPosterUrl(String posterPath) {
 //        Uri uri = Uri.parse(POSTER_BASE_URL).buildUpon()
@@ -45,6 +47,26 @@ public final class NetworkUtils {
         String url = POSTER_BASE_URL + POSTER_SIZE + posterPath;
 
         Log.v(TAG, "Poster uri: " + url);
+
+        return url;
+    }
+
+    public static URL buildSingleMovieUrl(int id) {
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(Integer.toString(id) )
+                .appendQueryParameter(API_PARAM, API_KEY)
+                .build();
+
+        URL url = null;
+
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built Search url: " + url);
 
         return url;
     }
@@ -80,6 +102,12 @@ public final class NetworkUtils {
                 break;
             case TOPRATED:
                 search = TOPRATED_PATH;
+                break;
+            case UPCOMING:
+                search = UPCOMING_PATH;
+                break;
+            case NOWPLAYING:
+                search = NOWPLAYING_PATH;
                 break;
             default:
                 search = "";

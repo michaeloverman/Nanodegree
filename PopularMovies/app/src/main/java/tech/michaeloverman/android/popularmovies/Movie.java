@@ -1,7 +1,5 @@
 package tech.michaeloverman.android.popularmovies;
 
-import android.os.Parcelable;
-
 /**
  * Created by Michael on 12/7/2016.
  *
@@ -21,6 +19,7 @@ public class Movie {
     private final String synopsis;
     private final String rating;
     private final String releaseDate;
+    private final int duration;
 
     public int getId() {
         return id;
@@ -46,6 +45,15 @@ public class Movie {
         return releaseDate;
     }
 
+    public String getReleaseYear() {
+        String[] dates= releaseDate.split("-");
+        return dates[0];
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
     public static class Builder {
         private int id;
         private String title;
@@ -53,6 +61,7 @@ public class Movie {
         private String synopsis;
         private String rating;
         private String releaseDate;
+        private int duration;
 
         public Builder(int id) {
             this.id = id;
@@ -79,7 +88,10 @@ public class Movie {
             releaseDate = str;
             return this;
         }
-
+        public Builder duration(int dur) {
+            duration = dur;
+            return this;
+        }
         public Movie build() {
             return new Movie(this);
         }
@@ -92,5 +104,6 @@ public class Movie {
         synopsis    = builder.synopsis;
         rating      = builder.rating;
         releaseDate = builder.releaseDate;
+        duration    = builder.duration;
     }
 }
