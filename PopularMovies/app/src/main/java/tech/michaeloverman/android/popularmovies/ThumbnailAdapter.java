@@ -17,7 +17,7 @@ import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
 public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.ThumbnailViewHolder> {
 
-    private Movie[] mMovies; // MAYBE THIS ISN'T STRING...?
+    private Movie[] mMovies;
 
     private final ThumbnailOnClickHandler mClickHandler;
 
@@ -63,14 +63,11 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
 
     class ThumbnailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-//        public final TextView mMovieText;
         public final ImageView mPosterView;
         private Context context;
-        private String posterPath = "/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
 
         public ThumbnailViewHolder(View view) {
             super(view);
-//            mMovieText = (TextView) view.findViewById(R.id.iv_movie_thumbnail);
             mPosterView = (ImageView) view.findViewById(R.id.iv_movie_thumbnail);
             context = view.getContext();
             view.setOnClickListener(this);
