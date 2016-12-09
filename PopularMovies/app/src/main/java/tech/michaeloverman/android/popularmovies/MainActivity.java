@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             mCurrentSearch = savedInstanceState.getInt(CURRENT_SEARCH, 2);
+            changeHeader();
         } else {
             mCurrentSearch = POPULAR;
         }
