@@ -2,10 +2,12 @@ package tech.michaeloverman.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,93 +21,180 @@ import java.net.URL;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
-
 public class MainActivity extends AppCompatActivity
-        implements ThumbnailAdapter.ThumbnailOnClickHandler {
+        implements ThumbnailAdapter.ThumbnailOnClickHandler,
+        PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int SPAN_COUNT = 2;
-//    private static final String EXTRA_MOVIE = "extra_movie";
 
+    /* Key for storing sort method in onSaveInstanceState bundle */
+    private static final String CURRENT_SEARCH = "search_index";
+
+    /* Static variables for tracking sort method */
+    public static final int TOPRATED = 1;
+    public static final int POPULAR = 2;
+    public static final int NOWPLAYING = 3;
+    public static final int UPCOMING = 4;
+
+    /* Member variables for controlling MainActivity view */
     private RecyclerView mRecyclerView;
     private ThumbnailAdapter mThumbnailAdapter;
-
     private TextView mErrorMessage;
     private ProgressBar mLoadingIndicator;
 
-    private SearchCriteria mCurrentSearch;
+    private int mCurrentSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCurrentSearch = SearchCriteria.POPULAR;
+        if (savedInstanceState != null) {
+            mCurrentSearch = savedInstanceState.getInt(CURRENT_SEARCH, 2);
+        } else {
+            mCurrentSearch = POPULAR;
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
 
         mErrorMessage = (TextView) findViewById(R.id.tv_error_message);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_download_indicator);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, SPAN_COUNT);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, determineSpanCount());
         mRecyclerView.setLayoutManager(layoutManager);
-
         mRecyclerView.setHasFixedSize(true);
 
         mThumbnailAdapter = new ThumbnailAdapter(this);
-
         mRecyclerView.setAdapter(mThumbnailAdapter);
 
         loadMovies();
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_SEARCH, mCurrentSearch);
+    }
+
+    /**
+     * Sets number of columns in GridLayout: 2 columns for portrait, 3 for landscape.
+     * Eventually should accommodate wider variety of devices by being more sophisticated
+     *  and determining width and height in pixels, and calculating number of columns from that.
+     *
+     * @return
+     */
+    private int determineSpanCount() {
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
+    /* Inflate single menu item */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }
 
+    /* Handle menu item click */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.sort_by)
+            showPopup(findViewById(R.id.sort_by));
+
+        return true;
+    }
+
+    /* PopupMenu for sorting options */
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup, popup.getMenu());
+        popup.show();
+    }
+
+    /* Handle clicks on PopupMenu options */
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
 
         switch(id) {
             case R.id.popular:
-                mCurrentSearch = SearchCriteria.POPULAR;
+                mCurrentSearch = POPULAR;
                 break;
             case R.id.rated:
-                mCurrentSearch = SearchCriteria.TOPRATED;
+                mCurrentSearch = TOPRATED;
                 break;
             case R.id.current:
-                mCurrentSearch = SearchCriteria.NOWPLAYING;
+                mCurrentSearch = NOWPLAYING;
                 break;
             case R.id.upcoming:
-                mCurrentSearch = SearchCriteria.UPCOMING;
+                mCurrentSearch = UPCOMING;
                 break;
             default:
-                mCurrentSearch = SearchCriteria.POPULAR;
+                mCurrentSearch = POPULAR;
         }
+
+        /* Reload movies with new search criteria */
         loadMovies();
+
+        /* Change view title to reflect current search criteria */
+        changeHeader();
+
         return true;
     }
 
-    private void loadMovies() {
-        /* TODO: Make this get the search criteria from a menu item */
+    /**
+     * Changes title of app window to show current search/sort criteria
+     */
+    private void changeHeader() {
+        String label = null;
+        switch(mCurrentSearch) {
+            case POPULAR:
+                label = getString(R.string.pref_most_popular);
+                break;
+            case TOPRATED:
+                label = getString(R.string.pref_highest_rated);
+                break;
+            case NOWPLAYING:
+                label = getString(R.string.pref_now_showing);
+                break;
+            case UPCOMING:
+                label = getString(R.string.pref_upcoming);
+                break;
+            default:
+                label = getString(R.string.app_name);
+        }
+        this.setTitle(label);
+    }
 
+    /* Calls AsyncTask to download movies */
+    private void loadMovies() {
         new GetMoviesTask().execute(mCurrentSearch);
     }
 
+    /* If movies download, show movies, not error message */
     private void showMoviePosters() {
         mErrorMessage.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
     }
+
+    /* If movies do not download, show error message */
     private void showErrorMessage() {
         mRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Handle selection of movie from GridLayout, create intent, and start child activity
+     * with detail information
+     * @param movie
+     */
     @Override
     public void onClick(Movie movie) {
         Context context = this;
@@ -115,7 +204,10 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private class GetMoviesTask extends AsyncTask<SearchCriteria, Void, Movie[]> {
+    /**
+     * AsyncTask to download movies in background.
+     */
+    private class GetMoviesTask extends AsyncTask<Integer, Void, Movie[]> {
 
         @Override
         protected void onPreExecute() {
@@ -124,15 +216,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected Movie[] doInBackground(SearchCriteria... criteria) {
+        protected Movie[] doInBackground(Integer... criteria) {
 
-            /* TODO: Make something default?? */
-            /* If no search criteria, don't search... */
             if(criteria.length == 0) {
                 return null;
             }
 
-            SearchCriteria crit = criteria[0];
+            int crit = criteria[0];
             URL movieSearchUrl = NetworkUtils.buildSearchUrl(crit);
 
             try {

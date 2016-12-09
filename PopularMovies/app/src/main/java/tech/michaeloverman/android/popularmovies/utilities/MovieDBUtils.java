@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import tech.michaeloverman.android.popularmovies.Movie;
 
 /**
+ * Utility methods for parsing JSON
  * Created by Michael on 12/7/2016.
  *
  * Basic structure of the methods in this class based on similar methods in
@@ -31,28 +32,7 @@ public final class MovieDBUtils {
     private static final String POSTER_PATH   = "poster_path";
     private static final String DURATION      = "runtime";
     private static final String MESSAGE_CODE  = "cod";
-//        private static final String TOTAL_RESULTS = "total_results";
 
-    /* TODO: Figure out a way to set this value in a setting or menu thing. */
-    private static int NUM_MOVIES_TO_FETCH = 100;
-
-
-    public static Movie getSingleMovieFromJson(Context context, String movieJsonString)
-            throws JSONException {
-        if(movieJsonString == null || movieJsonString.equals("") ) Log.d(TAG, "JSON String empty");
-
-        JSONObject movie = new JSONObject(movieJsonString);
-
-        Movie.Builder builder = new Movie.Builder(movie.getInt(ID))
-                .posterUrl(movie.getString(POSTER_PATH))
-                .title(movie.getString(TITLE))
-                .synopsis(movie.getString(SYNOPSIS))
-                .rating(movie.getString(RATING))
-                .releaseDate(movie.getString(RELEASE))
-                .duration(movie.getInt(DURATION));
-
-        return builder.build();
-    }
     /**
      * This method parses JSON from theMovieDB. I am including context in the constructor now,
      * so that if it is eventually decided to make the Release Date conform to local presentation
@@ -88,10 +68,7 @@ public final class MovieDBUtils {
             }
         }
 
-//        int totalResults = moviesJsonObject.getInt(TOTAL_RESULTS);
-//
-//        int moviesToFetch = totalResults < NUM_MOVIES_TO_FETCH ? totalResults : NUM_MOVIES_TO_FETCH;
-//
+
         JSONArray moviesArray = moviesJsonObject.getJSONArray(RESULTS);
         movies = new Movie[moviesArray.length()];
 
@@ -100,15 +77,38 @@ public final class MovieDBUtils {
 
             Movie.Builder builder = new Movie.Builder(movie.getInt(ID))
                     .posterUrl(movie.getString(POSTER_PATH));
-//                    .title(movie.getString(TITLE))
-//                    .synopsis(movie.getString(SYNOPSIS))
-//                    .rating(movie.getString(RATING))
-//                    .releaseDate(movie.getString(RELEASE))
-//                    .duration(movie.getInt(DURATION));
 
             movies[i] = builder.build();
         }
 
         return movies;
     }
+
+    /**
+     * Method to parse individual movie data from JSON string. Context is included to allow
+     * for location specific date notation in the future.
+     *
+     * @param context
+     * @param movieJsonString
+     * @return
+     * @throws JSONException
+     */
+    public static Movie getSingleMovieFromJson(Context context, String movieJsonString)
+            throws JSONException {
+        if(movieJsonString == null || movieJsonString.equals("") ) Log.d(TAG, "JSON String empty");
+
+        JSONObject movie = new JSONObject(movieJsonString);
+
+        /* Build the Movie object from the JSON data */
+        Movie.Builder builder = new Movie.Builder(movie.getInt(ID))
+                .posterUrl(movie.getString(POSTER_PATH))
+                .title(movie.getString(TITLE))
+                .synopsis(movie.getString(SYNOPSIS))
+                .rating(movie.getString(RATING))
+                .releaseDate(movie.getString(RELEASE))
+                .duration(movie.getInt(DURATION));
+
+        return builder.build();
+    }
+
 }

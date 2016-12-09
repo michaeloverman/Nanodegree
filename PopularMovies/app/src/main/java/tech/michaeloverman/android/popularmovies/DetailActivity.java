@@ -19,8 +19,11 @@ import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
+
+    /* Individual Movie object, holding all the details */
     private Movie mMovie;
 
+    /* Member variables controlling view */
     private TextView mTitle;
     private ImageView mPoster;
     private TextView mYear;
@@ -37,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        /* Find the specific movie id which originated this activity */
         Intent intent = this.getIntent();
         int movieId = -1;
         if(intent != null) {
@@ -60,9 +64,13 @@ public class DetailActivity extends AppCompatActivity {
         mErrorMessage = (TextView) findViewById(R.id.tv_detail_error_message);
         mLoadingIndicator = (ProgressBar) findViewById((R.id.pb_detail_download_indicator));
 
+        /* Call background task to get the movie's particulars */
         new GetMovieDetailsTask().execute(movieId);
     }
 
+    /**
+     * If movie info downloads, display it, and not the error message
+     */
     private void showMovieDetails() {
         mErrorMessage.setVisibility(View.INVISIBLE);
 
@@ -74,16 +82,23 @@ public class DetailActivity extends AppCompatActivity {
 
         mYear.setText(mMovie.getReleaseYear());
 
-        mDuration.setText(mMovie.getDuration() + " minutes");
+        mDuration.setText(mMovie.getDuration() + getString(R.string.minutes_label));
 
-        mRating.setText(mMovie.getRating() + " / 10.0");
+        mRating.setText(mMovie.getRating() + getString(R.string.rating_out_of));
 
         mSynopsis.setText(mMovie.getSynopsis());
     }
+
+    /**
+     * If movie info does not download, display error message.
+     */
     private void showErrorMessage() {
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Async task to run in background, downloading info about the movie.
+     */
     private class GetMovieDetailsTask extends AsyncTask<Integer, Void, Movie> {
 
         @Override

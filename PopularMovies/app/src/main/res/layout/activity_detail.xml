@@ -5,77 +5,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="tech.michaeloverman.android.popularmovies.DetailActivity">
-<RelativeLayout
-    android:id="@+id/activity_detail"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
+    <RelativeLayout
+        android:id="@+id/activity_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/tv_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textSize="42sp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/background_light"
-        android:paddingTop="24dp"
-        android:paddingBottom="24dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"/>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/poster_and_info_layout"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_title"
-        android:layout_centerHorizontal="true">
-        <ImageView
-            android:id="@+id/iv_movie_poster"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"/>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tv_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="42sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/background_light"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/poster_and_info_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-            <TextView
-                android:id="@+id/tv_year"
+            android:layout_below="@+id/tv_title"
+            android:layout_centerHorizontal="true">
+            <ImageView
+                android:id="@+id/iv_movie_poster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:padding="4dp"/>
-            <TextView
-                android:id="@+id/tv_duration"
+                android:padding="16dp"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="19sp"
-                android:textStyle="italic"
-                android:padding="4dp"/>
-            <TextView
-                android:id="@+id/tv_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:textSize="14sp"/>
+                android:orientation="vertical"
+                android:padding="8dp">
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:padding="4dp"/>
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="19sp"
+                    android:textStyle="italic"
+                    android:padding="4dp"/>
+                <TextView
+                    android:id="@+id/tv_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textSize="14sp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv_synopsis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/poster_and_info_layout"
-        android:padding="4dp"/>
+        <TextView
+            android:id="@+id/tv_synopsis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/poster_and_info_layout"
+            android:padding="4dp"/>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_detail_error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Download Error: Make certain you are connected to the internet, and try again."
-        android:gravity="center"
+        android:text="@string/download_error"
+        android:gravity="center_horizontal|center"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -93,5 +94,4 @@
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
         />
-</RelativeLayout>
 </ScrollView>

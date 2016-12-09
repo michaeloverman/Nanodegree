@@ -3,17 +3,20 @@ package tech.michaeloverman.android.popularmovies;
 /**
  * Created by Michael on 12/7/2016.
  *
- * I chose to use a Builder approach to creating Movie objects because I see potential
- * for much expansion in the future, and not all parameters will be required, necessarily.
- * In particular, I have noticed that some movies in the DB have video clips associated
- * with them, and others do not.
+ * Movie class holds information about the movie.
+ *
+ * A Builder approach to creating Movie objects is used because not all parameters are
+ * required by the main activity that are needed for the detail activity. Also, in the future
+ * some movies in the DB have video clips associated with them, and others do not.
  *
  * Builder structure modelled on the basic builder approach to object construction as
  * presented in "Effective Java" by Joshua Bloch.
  */
 
 public class Movie {
-    private final int id;
+
+    /* Member Variables */
+    private final int id; // TheMovieDB id
     private final String title;
     private final String posterUrl;
     private final String synopsis;
@@ -21,6 +24,7 @@ public class Movie {
     private final String releaseDate;
     private final int duration;
 
+    /* GETTERS */
     public int getId() {
         return id;
     }
@@ -54,6 +58,9 @@ public class Movie {
         return duration;
     }
 
+    /**
+     * Builder class to create movie object, accommodating different values.
+     */
     public static class Builder {
         private int id;
         private String title;
