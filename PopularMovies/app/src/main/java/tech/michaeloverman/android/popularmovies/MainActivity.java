@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
@@ -37,10 +39,11 @@ public class MainActivity extends AppCompatActivity
     public static final int UPCOMING = 4;
 
     /* Member variables for controlling MainActivity view */
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.main_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.tv_error_message) TextView mErrorMessage;
+    @BindView(R.id.pb_download_indicator) ProgressBar mLoadingIndicator;
+
     private ThumbnailAdapter mThumbnailAdapter;
-    private TextView mErrorMessage;
-    private ProgressBar mLoadingIndicator;
 
     private int mCurrentSearch;
 
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
             mCurrentSearch = savedInstanceState.getInt(CURRENT_SEARCH, 2);
@@ -55,11 +59,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             mCurrentSearch = POPULAR;
         }
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-
-        mErrorMessage = (TextView) findViewById(R.id.tv_error_message);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_download_indicator);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, determineSpanCount());
         mRecyclerView.setLayoutManager(layoutManager);

@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
@@ -24,21 +26,22 @@ public class DetailActivity extends AppCompatActivity {
     private Movie mMovie;
 
     /* Member variables controlling view */
-    private TextView mTitle;
-    private ImageView mPoster;
-    private TextView mYear;
-    private TextView mDuration;
-    private TextView mRating;
-    private TextView mSynopsis;
+    @BindView(R.id.tv_title) TextView mTitle;
+    @BindView(R.id.iv_movie_poster) ImageView mPoster;
+    @BindView(R.id.tv_year) TextView mYear;
+    @BindView(R.id.tv_duration) TextView mDuration;
+    @BindView(R.id.tv_rating) TextView mRating;
+    @BindView(R.id.tv_synopsis) TextView mSynopsis;
 
-    private TextView mErrorMessage;
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
+    @BindView(R.id.pb_detail_download_indicator) ProgressBar mLoadingIndicator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        ButterKnife.bind(this);
 
         /* Find the specific movie id which originated this activity */
         Intent intent = this.getIntent();
@@ -48,21 +51,6 @@ public class DetailActivity extends AppCompatActivity {
                 movieId = intent.getIntExtra(Intent.EXTRA_UID, -1);
             }
         }
-
-        mTitle = (TextView) findViewById(R.id.tv_title);
-
-        mPoster = (ImageView) findViewById(R.id.iv_movie_poster);
-
-        mYear = (TextView) findViewById(R.id.tv_year);
-
-        mDuration = (TextView) findViewById(R.id.tv_duration);
-
-        mRating = (TextView) findViewById(R.id.tv_rating);
-
-        mSynopsis = (TextView) findViewById(R.id.tv_synopsis);
-
-        mErrorMessage = (TextView) findViewById(R.id.tv_detail_error_message);
-        mLoadingIndicator = (ProgressBar) findViewById((R.id.pb_detail_download_indicator));
 
         /* Call background task to get the movie's particulars */
         new GetMovieDetailsTask().execute(movieId);
