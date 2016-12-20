@@ -37,6 +37,8 @@ public final class NetworkUtils {
     private static final String TOPRATED_PATH = "top_rated";
     private static final String UPCOMING_PATH = "upcoming";
     private static final String NOWPLAYING_PATH = "now_playing";
+    private static final String VIDEOS_PATH = "videos";
+    private static final String REVIEWS_PATH = "reviews";
 
     /* API Key is stored in separate class. That class file is ignored by git for
     security reasons.
@@ -100,6 +102,14 @@ public final class NetworkUtils {
         }
 
         return url;
+    }
+    
+    public static URL buildVideosUrl(int id) {
+        
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(Integer.toString(id))
+                .appendPath(VIDEOS_PATH)
+                .build();
     }
 
     public static String getJsonFromUrl(URL url) throws IOException {

@@ -1,6 +1,7 @@
 package tech.michaeloverman.android.popularmovies;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.michaeloverman.android.popularmovies.databinding.ActivityDetailBinding;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
@@ -26,13 +28,15 @@ public class DetailActivity extends AppCompatActivity {
     private Movie mMovie;
 
     /* Member variables controlling view */
-    @BindView(R.id.tv_title) TextView mTitle;
+//    @BindView(R.id.tv_title) TextView mTitle;
     @BindView(R.id.iv_movie_poster) ImageView mPoster;
-    @BindView(R.id.tv_year) TextView mYear;
-    @BindView(R.id.tv_duration) TextView mDuration;
-    @BindView(R.id.tv_rating) TextView mRating;
-    @BindView(R.id.tv_synopsis) TextView mSynopsis;
-
+//    @BindView(R.id.tv_year) TextView mYear;
+//    @BindView(R.id.tv_duration) TextView mDuration;
+//    @BindView(R.id.tv_rating) TextView mRating;
+//    @BindView(R.id.tv_synopsis) TextView mSynopsis;
+    ActivityDetailBinding mBinding;
+    
+    
     @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
     @BindView(R.id.pb_detail_download_indicator) ProgressBar mLoadingIndicator;
 
@@ -40,8 +44,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+//        setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         /* Find the specific movie id which originated this activity */
         Intent intent = this.getIntent();
@@ -62,19 +68,25 @@ public class DetailActivity extends AppCompatActivity {
     private void showMovieDetails() {
         mErrorMessage.setVisibility(View.INVISIBLE);
 
-        mTitle.setText(mMovie.getTitle());
-
+//        mTitle.setText(mMovie.getTitle());
+        mBinding.tvTitle.setText(mMovie.getTitle());
+        
         Picasso.with(DetailActivity.this)
                 .load(NetworkUtils.buildPosterUrl(mMovie.getPosterUrl()))
                 .into(mPoster);
 
-        mYear.setText(mMovie.getReleaseYear());
+//        mYear.setText(mMovie.getReleaseYear());
+        mBinding.tvYear.setText(mMovie.getReleaseYear());
 
-        mDuration.setText(mMovie.getDuration() + getString(R.string.minutes_label));
-
-        mRating.setText(mMovie.getRating() + getString(R.string.rating_out_of));
-
-        mSynopsis.setText(mMovie.getSynopsis());
+//        mDuration.setText(mMovie.getDuration() + getString(R.string.minutes_label));
+        mBinding.tvDuration.setText(mMovie.getDuration() + " minutes");
+        
+//        mRating.setText(mMovie.getRating() + getString(R.string.rating_out_of));
+        mBinding.tvRating.setText(mMovie.getRating() + " / 10.0");
+        
+//        mSynopsis.setText(mMovie.getSynopsis());
+        mBinding.tvSynopsis.setText(mMovie.getSynopsis());
+        
     }
 
     /**
