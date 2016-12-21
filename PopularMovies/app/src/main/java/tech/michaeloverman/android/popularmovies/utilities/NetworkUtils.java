@@ -37,8 +37,8 @@ public final class NetworkUtils {
     private static final String TOPRATED_PATH = "top_rated";
     private static final String UPCOMING_PATH = "upcoming";
     private static final String NOWPLAYING_PATH = "now_playing";
-    private static final String VIDEOS_PATH = "videos";
-    private static final String REVIEWS_PATH = "reviews";
+    public static final String VIDEOS_PATH = "videos";
+    public static final String REVIEWS_PATH = "reviews";
     private static final String YOUTUBE_BASE = "https://www.youtube.com/watch";
     private static final String YOUTUBE_PARAM = "v";
 
@@ -105,10 +105,11 @@ public final class NetworkUtils {
 
         return url;
     }
-    public static URL buildVideoDBUrl(int id) {
+    
+    public static URL buildVideoDBUrl(int id, String path) {
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendPath(Integer.toString(id) )
-                .appendPath(VIDEOS_PATH)
+                .appendPath(path)
                 .appendQueryParameter(API_PARAM, API_KEY)
                 .build();
     

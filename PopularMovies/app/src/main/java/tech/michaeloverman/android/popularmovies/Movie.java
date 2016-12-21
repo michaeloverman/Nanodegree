@@ -72,7 +72,17 @@ public class Movie {
 //    public boolean hasVideo() {
 //        return video;
 //    }
-    
+    public void setVideoLinks() {
+        try {
+            videoLinks.addAll(MovieDBUtils.getVideoLinksFromJson(
+                    NetworkUtils.getJsonFromUrl(NetworkUtils
+                            .buildVideoDBUrl(id, NetworkUtils.VIDEOS_PATH))));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<VideoLink> getVideoLinks() {
         if(videoLinks != null) return videoLinks;
         else return null;
@@ -93,7 +103,6 @@ public class Movie {
         private String rating;
         private String releaseDate;
         private int duration;
-//        private boolean video;
 
         public Builder(int id) {
             this.id = id;
@@ -124,10 +133,6 @@ public class Movie {
             duration = dur;
             return this;
         }
-//        public Builder video(boolean vid) {
-//            video = vid;
-//            return this;
-//        }
         public Movie build() {
             return new Movie(this);
         }
@@ -141,18 +146,7 @@ public class Movie {
         rating      = builder.rating;
         releaseDate = builder.releaseDate;
         duration    = builder.duration;
-//        video       = builder.video;
-        
         videoLinks = new ArrayList<>();
-        try {
-            videoLinks.addAll(MovieDBUtils.getVideoLinksFromJson(
-                    NetworkUtils.getJsonFromUrl(NetworkUtils.buildVideoDBUrl(id))));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    
-//        Log.d("MOVIE:", "Movie does " + (video ? "" : " not ") + "have videos: ");
+
     }
 }

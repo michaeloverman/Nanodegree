@@ -2,7 +2,6 @@ package tech.michaeloverman.android.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,17 +45,14 @@ public class VideoLinkAdapter extends
     
     @Override
     public void onBindViewHolder(VideoLinkAdapter.VideoLinkAdapterViewHolder holder, int position) {
-        Log.d(TAG, "Binding ViewHolder position: " + position);
+//        Log.d(TAG, "Binding ViewHolder position: " + position);
         VideoLink link = videos.get(position);
         holder.titleView.setText(link.getTitle());
     }
     
     @Override
     public int getItemCount() {
-        if(videos == null) {
-            Log.d(TAG, "null videos on getItemCount()");
-            return 0;
-        }
+        if (videos == null) return 0;
         return videos.size();
     }
     

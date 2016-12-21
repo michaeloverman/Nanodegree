@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import tech.michaeloverman.android.popularmovies.Movie;
+import tech.michaeloverman.android.popularmovies.MovieReview;
 import tech.michaeloverman.android.popularmovies.VideoLink;
 
 /**
@@ -38,7 +39,9 @@ public final class MovieDBUtils {
     private static final String VIDEOS        = "video";
     private static final String VIDEO_KEY     = "key";
     private static final String VIDEO_TITLE_KEY = "name";
-
+    private static final String CONTENT_KEY   = "content";
+    private static final String AUTHOR_KEY    = "author";
+    
     /**
      * This method parses JSON from theMovieDB. I am including context in the constructor now,
      * so that if it is eventually decided to make the Release Date conform to local presentation
@@ -52,7 +55,10 @@ public final class MovieDBUtils {
     public static Movie[] getMoviesFromJson(Context context, String moviesJsonString)
             throws JSONException {
 
-        if(moviesJsonString == null || moviesJsonString.equals("") ) Log.d(TAG, "JSON String empty");
+        if(moviesJsonString == null || moviesJsonString.equals("") ) {
+            Log.d(TAG, "JSON String empty");
+            return null;
+        }
 
         Movie[] movies = null;
 
@@ -120,7 +126,10 @@ public final class MovieDBUtils {
     
     public static ArrayList<VideoLink> getVideoLinksFromJson(String videoLinkJsonString)
             throws JSONException {
-        if(videoLinkJsonString == null || videoLinkJsonString.equals("") ) Log.d(TAG, "Empty JSON String");
+        if(videoLinkJsonString == null || videoLinkJsonString.equals("") ) {
+            Log.d(TAG, "Empty JSON String");
+            return null;
+        }
         
         ArrayList<VideoLink> links = new ArrayList<>();
         
@@ -137,5 +146,24 @@ public final class MovieDBUtils {
         }
         Log.d(TAG, links.size() + " VideoLinks made!!!!!!!!!!!!!!!!!!!");
         return links;
+    }
+    
+    public static MovieReview[] getReviewsFromJson(String reviewJsonString)
+            throws JSONException {
+        if(reviewJsonString == null || reviewJsonString.equals("")) {
+            Log.d(TAG, "Empty JSON string");
+            return null;
+        }
+        
+        JSONObject reviewsJsonObject = new JSONObject(reviewJsonString);
+        JSONArray reviewsArray = reviewsJsonObject.getJSONArray("results");
+        MovieReview[] reviews = new MovieReview[reviewsArray.length()];
+        for (int i=0; i < reviewsArray.length(); i++) {
+            JSONObject review = reviewsArray.getJSONObject(i);
+            String author = review.getString(AUTHOR_KEY);
+            String content = review.getString(CONTENT_KEY);
+            reviews[i] = new MovieReview(author, content);
+        }
+        return reviews;
     }
 }

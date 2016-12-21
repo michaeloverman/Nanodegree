@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/pref_most_popular"
+        android:id="@+id/popular"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="@string/pref_highest_rated"
+        android:id="@+id/rated"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="@string/pref_now_showing"
+        android:id="@+id/current"
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="@string/pref_upcoming"
+        android:id="@+id/upcoming"
+        android:orderInCategory="4"
+        app:showAsAction="ifRoom"/>
+</menu>

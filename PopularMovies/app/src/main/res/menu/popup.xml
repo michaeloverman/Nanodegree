@@ -24,4 +24,10 @@
         android:id="@+id/upcoming"
         android:orderInCategory="4"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="@string/pref_favorites"
+        android:id="@+id/favorites"
+        android:orderInCategory="5"
+        app:showAsAction="ifRoom"/>
 </menu>

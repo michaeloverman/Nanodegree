@@ -3,8 +3,13 @@ package tech.michaeloverman.android.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -16,15 +21,21 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.michaeloverman.android.popularmovies.data.FavoritesContract;
+import tech.michaeloverman.android.popularmovies.data.MoviePreferences;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity
         implements ThumbnailAdapter.ThumbnailOnClickHandler,
+        LoaderManager.LoaderCallbacks<Cursor>,
         PopupMenu.OnMenuItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -37,11 +48,23 @@ public class MainActivity extends AppCompatActivity
     public static final int POPULAR = 2;
     public static final int NOWPLAYING = 3;
     public static final int UPCOMING = 4;
-
+    public static final int FAVORITES = 5;
+    
+    public static final String[] MAIN_FAVORITES_PROJECTION = {
+            FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID,
+            FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL,
+    };
+    public static final int INDEX_MOVIE_ID = 0;
+    public static final int INDEX_POSTER_URL = 1;
+    
+    
     /* Member variables for controlling MainActivity view */
-    @BindView(R.id.main_recycler_view) RecyclerView mRecyclerView;
-    @BindView(R.id.tv_error_message) TextView mErrorMessage;
-    @BindView(R.id.pb_download_indicator) ProgressBar mLoadingIndicator;
+    @BindView(R.id.main_recycler_view)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.tv_error_message)
+    TextView mErrorMessage;
+    @BindView(R.id.pb_download_indicator)
+    ProgressBar mLoadingIndicator;
 
     private ThumbnailAdapter mThumbnailAdapter;
 
@@ -57,7 +80,7 @@ public class MainActivity extends AppCompatActivity
             mCurrentSearch = savedInstanceState.getInt(CURRENT_SEARCH, 2);
             changeHeader();
         } else {
-            mCurrentSearch = POPULAR;
+            mCurrentSearch = MoviePreferences.getSortCriterium(this);
         }
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, determineSpanCount());
@@ -136,9 +159,14 @@ public class MainActivity extends AppCompatActivity
             case R.id.upcoming:
                 mCurrentSearch = UPCOMING;
                 break;
+            case R.id.favorites:
+                mCurrentSearch = FAVORITES;
+                break;
             default:
                 mCurrentSearch = POPULAR;
         }
+    
+        MoviePreferences.setSortCriterium(this, mCurrentSearch);
 
         /* Reload movies with new search criteria */
         loadMovies();
@@ -203,7 +231,44 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(Intent.EXTRA_UID, movie.getId());
         startActivity(intent);
     }
-
+    
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        
+        return new CursorLoader(this,
+                FavoritesContract.FavoriteEntry.CONTENT_URI,
+                MAIN_FAVORITES_PROJECTION,
+                null,
+                null,
+                null);
+        
+    }
+    
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(data.getCount() != 0) {
+            Movie[] films = new Movie[data.getCount()];
+            data.moveToFirst();
+            for(int i=0; i < data.getCount(); i++) {
+                try {
+                    films[i] = MovieDBUtils.getSingleMovieFromJson(this, NetworkUtils.getJsonFromUrl(
+                            NetworkUtils.buildSingleMovieUrl(data.getInt(MainActivity.INDEX_MOVIE_ID))));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        mThumbnailAdapter.setMovies(films);
+        }
+        
+    }
+    
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        
+    }
+    
     /**
      * AsyncTask to download movies in background.
      */
@@ -223,17 +288,21 @@ public class MainActivity extends AppCompatActivity
             }
 
             int crit = criteria[0];
-            URL movieSearchUrl = NetworkUtils.buildSearchUrl(crit);
-
-            try {
-                String movieSearchResultJson = NetworkUtils.getJsonFromUrl(movieSearchUrl);
-
-                Movie[] movies = MovieDBUtils.getMoviesFromJson(MainActivity.this, movieSearchResultJson);
-
-                return movies;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+            if(crit == FAVORITES) {
+                return getFavoriteMovies();
+            } else {
+                URL movieSearchUrl = NetworkUtils.buildSearchUrl(crit);
+    
+                try {
+                    String movieSearchResultJson = NetworkUtils.getJsonFromUrl(movieSearchUrl);
+        
+                    Movie[] movies = MovieDBUtils.getMoviesFromJson(MainActivity.this, movieSearchResultJson);
+        
+                    return movies;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
         }
 
@@ -246,6 +315,33 @@ public class MainActivity extends AppCompatActivity
             } else {
                 showErrorMessage();
             }
+        }
+        
+        private Movie[] getFavoriteMovies() {
+            Movie[] movies;
+            Uri queryUri = FavoritesContract.FavoriteEntry.CONTENT_URI;
+            String [] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID};
+            
+            Cursor cursor = getApplicationContext().getContentResolver().query(
+                    queryUri,
+                    projection,
+                    null,
+                    null,
+                    null);
+            
+            int count = cursor.getCount();
+            movies = new Movie[count];
+            for (int i = 0; i < count; i++) {
+                cursor.move(i);
+                int id = cursor.getInt(MainActivity.INDEX_MOVIE_ID);
+                String url = cursor.getString(MainActivity.INDEX_POSTER_URL);
+                movies[i] = new Movie.Builder(id)
+                        .posterUrl(url)
+                        .build();
+            }
+            
+            
+            return movies;
         }
     }
 }

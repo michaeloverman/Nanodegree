@@ -1,5 +1,6 @@
 package tech.michaeloverman.android.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -25,7 +26,8 @@ public class DetailActivity extends AppCompatActivity
         implements VideoLinkAdapter.VideoLinkAdapterOnClickHandler {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
-
+    public static final String MOVIE_TITLE_EXTRA = "movie_title";
+    
     /* Individual Movie object, holding all the details */
     private Movie mMovie;
 
@@ -107,6 +109,33 @@ public class DetailActivity extends AppCompatActivity
 
     }
 
+    public void buttonClicked(View view) {
+        
+        switch(view.getId()) {
+            case R.id.favorite_button:
+                favoriteButtonClicked();
+                break;
+            case R.id.reviews_button:
+                openReviewsActivity();
+                break;
+            default:
+                
+                
+        }
+//        Log.d(TAG, button + " button clicked");
+    }
+    
+    public void favoriteButtonClicked() {
+        ContentValues values = new ContentValues();
+        
+    }
+    
+    private void openReviewsActivity() {
+        Intent reviewsIntent = new Intent(this, ReviewActivity.class);
+        reviewsIntent.putExtra(Intent.EXTRA_UID, mMovie.getId());
+        reviewsIntent.putExtra(MOVIE_TITLE_EXTRA, mMovie.getTitle());
+        startActivity(reviewsIntent);
+    }
     /**
      * If movie info does not download, display error message.
      */
@@ -149,7 +178,7 @@ public class DetailActivity extends AppCompatActivity
                 String movieSearchResultJson = NetworkUtils.getJsonFromUrl(movieUrl);
 
                 Movie movie = MovieDBUtils.getSingleMovieFromJson(DetailActivity.this, movieSearchResultJson);
-
+                movie.setVideoLinks();
                 return movie;
             } catch (Exception e) {
                 e.printStackTrace();

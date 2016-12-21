@@ -8,4 +8,7 @@
     <string name="sort_by">Sort by...</string>
     <string name="minutes_label">" minutes"</string>
     <string name="rating_out_of">" / 10.0"</string>
+    <string name="mark_as_favorite">Mark as favorite</string>
+    <string name="read_reviews">Read reviews</string>
+    <string name="pref_favorites">Favorites</string>
 </resources>
