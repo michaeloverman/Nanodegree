@@ -8,8 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 import tech.michaeloverman.android.popularmovies.Movie;
+import tech.michaeloverman.android.popularmovies.VideoLink;
 
 /**
  * Utility methods for parsing JSON
@@ -32,6 +35,9 @@ public final class MovieDBUtils {
     private static final String POSTER_PATH   = "poster_path";
     private static final String DURATION      = "runtime";
     private static final String MESSAGE_CODE  = "cod";
+    private static final String VIDEOS        = "video";
+    private static final String VIDEO_KEY     = "key";
+    private static final String VIDEO_TITLE_KEY = "name";
 
     /**
      * This method parses JSON from theMovieDB. I am including context in the constructor now,
@@ -107,8 +113,29 @@ public final class MovieDBUtils {
                 .rating(movie.getString(RATING))
                 .releaseDate(movie.getString(RELEASE))
                 .duration(movie.getInt(DURATION));
+//                .video(movie.getBoolean(VIDEOS));
 
         return builder.build();
     }
-
+    
+    public static ArrayList<VideoLink> getVideoLinksFromJson(String videoLinkJsonString)
+            throws JSONException {
+        if(videoLinkJsonString == null || videoLinkJsonString.equals("") ) Log.d(TAG, "Empty JSON String");
+        
+        ArrayList<VideoLink> links = new ArrayList<>();
+        
+        JSONObject videoLinks = new JSONObject(videoLinkJsonString);
+        
+        JSONArray videosArray = videoLinks.getJSONArray("results");
+        
+        for (int i = 0; i < videosArray.length(); i++) {
+            JSONObject video = videosArray.getJSONObject(i);
+            String key = video.getString(VIDEO_KEY);
+            URL url = NetworkUtils.buildVideoLink(key);
+            String title = video.getString(VIDEO_TITLE_KEY);
+            links.add(new VideoLink(title, url));
+        }
+        Log.d(TAG, links.size() + " VideoLinks made!!!!!!!!!!!!!!!!!!!");
+        return links;
+    }
 }

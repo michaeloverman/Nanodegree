@@ -1,5 +1,14 @@
 package tech.michaeloverman.android.popularmovies;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
+import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
+
 /**
  * Created by Michael on 12/7/2016.
  *
@@ -23,6 +32,8 @@ public class Movie {
     private final String rating;
     private final String releaseDate;
     private final int duration;
+//    private final boolean video;
+    private final ArrayList<VideoLink> videoLinks;
 
     /* GETTERS */
     public int getId() {
@@ -57,6 +68,19 @@ public class Movie {
     public int getDuration() {
         return duration;
     }
+    
+//    public boolean hasVideo() {
+//        return video;
+//    }
+    
+    public ArrayList<VideoLink> getVideoLinks() {
+        if(videoLinks != null) return videoLinks;
+        else return null;
+    }
+    public URL getVideoLink(int id) {
+        if(id >= videoLinks.size()) return null;
+        return videoLinks.get(id).getURL();
+    }
 
     /**
      * Builder class to create movie object, accommodating different values.
@@ -69,6 +93,7 @@ public class Movie {
         private String rating;
         private String releaseDate;
         private int duration;
+//        private boolean video;
 
         public Builder(int id) {
             this.id = id;
@@ -99,6 +124,10 @@ public class Movie {
             duration = dur;
             return this;
         }
+//        public Builder video(boolean vid) {
+//            video = vid;
+//            return this;
+//        }
         public Movie build() {
             return new Movie(this);
         }
@@ -112,5 +141,18 @@ public class Movie {
         rating      = builder.rating;
         releaseDate = builder.releaseDate;
         duration    = builder.duration;
+//        video       = builder.video;
+        
+        videoLinks = new ArrayList<>();
+        try {
+            videoLinks.addAll(MovieDBUtils.getVideoLinksFromJson(
+                    NetworkUtils.getJsonFromUrl(NetworkUtils.buildVideoDBUrl(id))));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+//        Log.d("MOVIE:", "Movie does " + (video ? "" : " not ") + "have videos: ");
     }
 }

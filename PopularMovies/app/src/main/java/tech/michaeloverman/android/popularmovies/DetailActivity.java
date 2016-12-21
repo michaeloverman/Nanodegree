@@ -2,9 +2,12 @@ package tech.michaeloverman.android.popularmovies;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -14,13 +17,12 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import tech.michaeloverman.android.popularmovies.databinding.ActivityDetailBinding;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity
+        implements VideoLinkAdapter.VideoLinkAdapterOnClickHandler {
 
     private static final String TAG = DetailActivity.class.getSimpleName();
 
@@ -29,7 +31,8 @@ public class DetailActivity extends AppCompatActivity {
 
     /* Member variables controlling view */
 //    @BindView(R.id.tv_title) TextView mTitle;
-    @BindView(R.id.iv_movie_poster) ImageView mPoster;
+//    @BindView(R.id.iv_movie_poster) ImageView mPoster;
+    ImageView mPoster;
 //    @BindView(R.id.tv_year) TextView mYear;
 //    @BindView(R.id.tv_duration) TextView mDuration;
 //    @BindView(R.id.tv_rating) TextView mRating;
@@ -37,17 +40,29 @@ public class DetailActivity extends AppCompatActivity {
     ActivityDetailBinding mBinding;
     
     
-    @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
-    @BindView(R.id.pb_detail_download_indicator) ProgressBar mLoadingIndicator;
-
+//    @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
+//    @BindView(R.id.pb_detail_download_indicator) ProgressBar mLoadingIndicator;
+    private TextView mErrorMessage;
+    private ProgressBar mLoadingIndicator;
+    
+    private RecyclerView mVideoRecycler;
+    private VideoLinkAdapter mVideoLinkAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
-        
+//        ButterKnife.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        mErrorMessage = (TextView) findViewById(R.id.tv_detail_error_message);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_detail_download_indicator);
+        mPoster = (ImageView) findViewById(R.id.iv_movie_poster);
+        mVideoRecycler = (RecyclerView) findViewById(R.id.rv_video_links);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mVideoRecycler.setLayoutManager(layoutManager);
+        mVideoRecycler.setHasFixedSize(true);
+        mVideoLinkAdapter = new VideoLinkAdapter(this, this);
 
         /* Find the specific movie id which originated this activity */
         Intent intent = this.getIntent();
@@ -60,6 +75,8 @@ public class DetailActivity extends AppCompatActivity {
 
         /* Call background task to get the movie's particulars */
         new GetMovieDetailsTask().execute(movieId);
+        
+        mVideoRecycler.setAdapter(mVideoLinkAdapter);
     }
 
     /**
@@ -69,24 +86,25 @@ public class DetailActivity extends AppCompatActivity {
         mErrorMessage.setVisibility(View.INVISIBLE);
 
 //        mTitle.setText(mMovie.getTitle());
-        mBinding.tvTitle.setText(mMovie.getTitle());
+        mBinding.titleHeaderLayout.tvTitle.setText(mMovie.getTitle());
         
         Picasso.with(DetailActivity.this)
                 .load(NetworkUtils.buildPosterUrl(mMovie.getPosterUrl()))
                 .into(mPoster);
 
 //        mYear.setText(mMovie.getReleaseYear());
-        mBinding.tvYear.setText(mMovie.getReleaseYear());
+        mBinding.detailInfoLayout.tvYear.setText(mMovie.getReleaseYear());
 
 //        mDuration.setText(mMovie.getDuration() + getString(R.string.minutes_label));
-        mBinding.tvDuration.setText(mMovie.getDuration() + " minutes");
+        mBinding.detailInfoLayout.tvDuration.setText(mMovie.getDuration() + " minutes");
         
 //        mRating.setText(mMovie.getRating() + getString(R.string.rating_out_of));
-        mBinding.tvRating.setText(mMovie.getRating() + " / 10.0");
+        mBinding.detailInfoLayout.tvRating.setText(mMovie.getRating() + " / 10.0");
         
 //        mSynopsis.setText(mMovie.getSynopsis());
-        mBinding.tvSynopsis.setText(mMovie.getSynopsis());
+        mBinding.detailInfoLayout.tvSynopsis.setText(mMovie.getSynopsis());
         
+
     }
 
     /**
@@ -95,7 +113,16 @@ public class DetailActivity extends AppCompatActivity {
     private void showErrorMessage() {
         mErrorMessage.setVisibility(View.VISIBLE);
     }
-
+    
+    @Override
+    public void onClick(int id) {
+        Intent videoPlayIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(mMovie.getVideoLink(id).toString()));
+//        Uri videoLink = mMovie.getVideoLink(id);
+//        videoPlayIntent.setData(videoLink);
+        startActivity(videoPlayIntent);
+    }
+    
     /**
      * Async task to run in background, downloading info about the movie.
      */
@@ -135,6 +162,8 @@ public class DetailActivity extends AppCompatActivity {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movie != null) {
                 mMovie = movie;
+                mVideoLinkAdapter.setLinkData(mMovie.getVideoLinks());
+                
                 showMovieDetails();
             } else {
                 showErrorMessage();
