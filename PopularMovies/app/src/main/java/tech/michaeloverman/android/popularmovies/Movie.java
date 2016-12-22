@@ -34,6 +34,7 @@ public class Movie {
     private final int duration;
 //    private final boolean video;
     private final ArrayList<VideoLink> videoLinks;
+    private boolean favorite;
 
     /* GETTERS */
     public int getId() {
@@ -72,6 +73,13 @@ public class Movie {
 //    public boolean hasVideo() {
 //        return video;
 //    }
+    public boolean isFavorite() {
+        return favorite;
+    }
+    public void markFavorite(boolean fave) {
+        favorite = fave;
+    }
+    
     public void setVideoLinks() {
         try {
             videoLinks.addAll(MovieDBUtils.getVideoLinksFromJson(

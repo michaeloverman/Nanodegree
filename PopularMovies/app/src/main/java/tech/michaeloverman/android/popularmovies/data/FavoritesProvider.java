@@ -8,12 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by Michael on 12/20/2016.
  */
 
 public class FavoritesProvider extends ContentProvider {
+    
+    public static final String TAG = FavoritesProvider.class.getSimpleName();
     
     public static final int CODE_FAVORITES = 100;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -31,6 +34,7 @@ public class FavoritesProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mDBHelper = new FavoritesDBHelper(getContext());
+        Log.d(TAG, "in OnCreate()....");
         return true;
     }
     
@@ -70,6 +74,7 @@ public class FavoritesProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues value) {
         final SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        long _id = 0L;
         
         switch(sUriMatcher.match(uri)) {
             case CODE_FAVORITES:
@@ -77,7 +82,7 @@ public class FavoritesProvider extends ContentProvider {
                 int rowsInserted = 0;
                 try {
 //                    int movieId = value.getAsInteger(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID);
-                    long _id = db.insert(FavoritesContract.FavoriteEntry.TABLE_NAME, null, value);
+                    _id = db.insert(FavoritesContract.FavoriteEntry.TABLE_NAME, null, value);
                     if(_id != -1) {
                         rowsInserted++;
                     }
@@ -91,7 +96,7 @@ public class FavoritesProvider extends ContentProvider {
                 return uri;
         }
         
-        return null;
+        return uri;
     }
     
     @Override

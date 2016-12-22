@@ -333,8 +333,8 @@ public class MainActivity extends AppCompatActivity
             movies = new Movie[count];
             for (int i = 0; i < count; i++) {
                 cursor.move(i);
-                int id = cursor.getInt(MainActivity.INDEX_MOVIE_ID);
-                String url = cursor.getString(MainActivity.INDEX_POSTER_URL);
+                int id = cursor.getInt(INDEX_MOVIE_ID);
+                String url = cursor.getString(INDEX_POSTER_URL);
                 movies[i] = new Movie.Builder(id)
                         .posterUrl(url)
                         .build();

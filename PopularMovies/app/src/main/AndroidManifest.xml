@@ -26,6 +26,12 @@
         <activity android:name=".ReviewActivity">
 
         </activity>
+
+        <provider
+            android:name=".data.FavoritesProvider"
+            android:authorities="tech.michaeloverman.android.popularmovies"
+            android:exported="false" />
+
     </application>
 
 </manifest>

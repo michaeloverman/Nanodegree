@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 
+import tech.michaeloverman.android.popularmovies.data.FavoritesContract;
 import tech.michaeloverman.android.popularmovies.databinding.ActivityDetailBinding;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
@@ -40,6 +42,8 @@ public class DetailActivity extends AppCompatActivity
 //    @BindView(R.id.tv_rating) TextView mRating;
 //    @BindView(R.id.tv_synopsis) TextView mSynopsis;
     ActivityDetailBinding mBinding;
+    Button mFavoriteButton;
+    ImageView mFavoriteStar;
     
     
 //    @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
@@ -59,6 +63,8 @@ public class DetailActivity extends AppCompatActivity
         mErrorMessage = (TextView) findViewById(R.id.tv_detail_error_message);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_detail_download_indicator);
         mPoster = (ImageView) findViewById(R.id.iv_movie_poster);
+        mFavoriteButton = (Button) findViewById(R.id.favorite_button);
+        mFavoriteStar = (ImageView) findViewById(R.id.favorite_star);
         mVideoRecycler = (RecyclerView) findViewById(R.id.rv_video_links);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -75,6 +81,7 @@ public class DetailActivity extends AppCompatActivity
             }
         }
 
+        if (movieId == -1) this.onStop();
         /* Call background task to get the movie's particulars */
         new GetMovieDetailsTask().execute(movieId);
         
@@ -106,6 +113,10 @@ public class DetailActivity extends AppCompatActivity
 //        mSynopsis.setText(mMovie.getSynopsis());
         mBinding.detailInfoLayout.tvSynopsis.setText(mMovie.getSynopsis());
         
+        // check DB for whether marked as Favorite on not
+        // set button text
+        // set star
+        
 
     }
 
@@ -126,10 +137,30 @@ public class DetailActivity extends AppCompatActivity
     }
     
     public void favoriteButtonClicked() {
-        ContentValues values = new ContentValues();
-        
+        if(!mMovie.isFavorite()) {
+            ContentValues values = new ContentValues();
+            values.put(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID, mMovie.getId());
+            values.put(FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL, mMovie.getPosterUrl());
+    
+            this.getContentResolver().insert(FavoritesContract.FavoriteEntry.CONTENT_URI, values);
+            
+            mMovie.markFavorite(true);
+            showAsFavorite();
+        } else {
+            
+            mMovie.markFavorite(false);
+            unfavorite();
+        }
     }
     
+    private void showAsFavorite() {
+        mFavoriteButton.setText(R.string.button_text_marked);
+        mFavoriteStar.setVisibility(View.VISIBLE);
+    }
+    private void unfavorite() {
+        mFavoriteButton.setText(R.string.mark_as_favorite);
+        mFavoriteStar.setVisibility(View.INVISIBLE);
+    }
     private void openReviewsActivity() {
         Intent reviewsIntent = new Intent(this, ReviewActivity.class);
         reviewsIntent.putExtra(Intent.EXTRA_UID, mMovie.getId());
