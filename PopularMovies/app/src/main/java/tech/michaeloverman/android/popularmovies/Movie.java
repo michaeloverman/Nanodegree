@@ -76,6 +76,7 @@ public class Movie {
     public boolean isFavorite() {
         return favorite;
     }
+    
     public void markFavorite(boolean fave) {
         favorite = fave;
     }

@@ -3,7 +3,6 @@ package tech.michaeloverman.android.popularmovies.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by Michael on 12/20/2016.
@@ -18,7 +17,7 @@ public class FavoritesDBHelper extends SQLiteOpenHelper {
     
     public FavoritesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.d(TAG, ".... in constructor...");
+//        Log.d(TAG, ".... in constructor...");
     }
     
     @Override

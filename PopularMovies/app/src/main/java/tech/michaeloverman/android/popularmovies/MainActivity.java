@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.net.Uri;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import java.net.URL;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.michaeloverman.android.popularmovies.data.FavoritesContract;
+import tech.michaeloverman.android.popularmovies.data.FavoritesDBHelper;
 import tech.michaeloverman.android.popularmovies.data.MoviePreferences;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
@@ -92,7 +94,17 @@ public class MainActivity extends AppCompatActivity
 
         loadMovies();
     }
-
+    
+    @Override
+    protected void onStart() {
+        /*
+         * When returning from detail view, list of favorites may have changed, so list
+         * must be reloaded
+         */
+        if(mCurrentSearch == FAVORITES) loadMovies();
+        super.onStart();
+    }
+    
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -278,6 +290,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
+            Log.d(TAG, "GetMoviesTask, starting");
         }
 
         @Override
@@ -308,6 +321,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Movie[] movies) {
+            Log.d(TAG, "GetMoviesTask onPostExecute()");
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movies != null) {
                 showMoviePosters();
@@ -318,28 +332,41 @@ public class MainActivity extends AppCompatActivity
         }
         
         private Movie[] getFavoriteMovies() {
+            Log.d(TAG, "entered getFavoriteMovies()");
             Movie[] movies;
-            Uri queryUri = FavoritesContract.FavoriteEntry.CONTENT_URI;
-            String [] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID};
+//            Uri queryUri = FavoritesContract.FavoriteEntry.CONTENT_URI;
+            String[] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID,
+                    FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL};
+    
+            SQLiteDatabase db = new FavoritesDBHelper(getApplicationContext()).getReadableDatabase();
             
-            Cursor cursor = getApplicationContext().getContentResolver().query(
-                    queryUri,
+            Cursor cursor = db.query(
+                    FavoritesContract.FavoriteEntry.TABLE_NAME,
                     projection,
                     null,
                     null,
+                    null,
+                    null,
                     null);
+            Log.d(TAG, "cursor created");
             
             int count = cursor.getCount();
+            Log.d(TAG, "cursor count: " + count);
+            
             movies = new Movie[count];
+            cursor.moveToFirst();
             for (int i = 0; i < count; i++) {
-                cursor.move(i);
+                Log.d(TAG, "getting favorites loop: " + i);
+//                cursor.move(i);
                 int id = cursor.getInt(INDEX_MOVIE_ID);
                 String url = cursor.getString(INDEX_POSTER_URL);
                 movies[i] = new Movie.Builder(id)
                         .posterUrl(url)
                         .build();
+                if(!cursor.moveToNext()) break;
             }
             
+            cursor.close();
             
             return movies;
         }

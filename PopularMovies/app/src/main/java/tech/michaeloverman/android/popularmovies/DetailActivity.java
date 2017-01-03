@@ -2,6 +2,8 @@ package tech.michaeloverman.android.popularmovies;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 import tech.michaeloverman.android.popularmovies.data.FavoritesContract;
+import tech.michaeloverman.android.popularmovies.data.FavoritesDBHelper;
 import tech.michaeloverman.android.popularmovies.databinding.ActivityDetailBinding;
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
@@ -114,6 +118,7 @@ public class DetailActivity extends AppCompatActivity
         mBinding.detailInfoLayout.tvSynopsis.setText(mMovie.getSynopsis());
         
         // check DB for whether marked as Favorite on not
+        if(mMovie.isFavorite()) showAsFavorite();
         // set button text
         // set star
         
@@ -137,19 +142,27 @@ public class DetailActivity extends AppCompatActivity
     }
     
     public void favoriteButtonClicked() {
+        final SQLiteDatabase db = new FavoritesDBHelper(getApplicationContext()).getWritableDatabase();
+        
         if(!mMovie.isFavorite()) {
+            db.beginTransaction();
             ContentValues values = new ContentValues();
             values.put(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID, mMovie.getId());
             values.put(FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL, mMovie.getPosterUrl());
-    
-            this.getContentResolver().insert(FavoritesContract.FavoriteEntry.CONTENT_URI, values);
             
+            Log.d(TAG, "Content Values created: " + values.toString());
+            
+            db.insert(FavoritesContract.FavoriteEntry.TABLE_NAME, null, values);
+            db.setTransactionSuccessful();
+            db.endTransaction();
             mMovie.markFavorite(true);
             showAsFavorite();
         } else {
-            
+            String selection = FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID + " LIKE ?";
+            String[] selectionArgs = { Integer.toString(mMovie.getId()) };
+            db.delete(FavoritesContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
             mMovie.markFavorite(false);
-            unfavorite();
+            showAsNonFavorite();
         }
     }
     
@@ -157,16 +170,19 @@ public class DetailActivity extends AppCompatActivity
         mFavoriteButton.setText(R.string.button_text_marked);
         mFavoriteStar.setVisibility(View.VISIBLE);
     }
-    private void unfavorite() {
+    
+    private void showAsNonFavorite() {
         mFavoriteButton.setText(R.string.mark_as_favorite);
         mFavoriteStar.setVisibility(View.INVISIBLE);
     }
+    
     private void openReviewsActivity() {
         Intent reviewsIntent = new Intent(this, ReviewActivity.class);
         reviewsIntent.putExtra(Intent.EXTRA_UID, mMovie.getId());
         reviewsIntent.putExtra(MOVIE_TITLE_EXTRA, mMovie.getTitle());
         startActivity(reviewsIntent);
     }
+    
     /**
      * If movie info does not download, display error message.
      */
@@ -178,8 +194,6 @@ public class DetailActivity extends AppCompatActivity
     public void onClick(int id) {
         Intent videoPlayIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(mMovie.getVideoLink(id).toString()));
-//        Uri videoLink = mMovie.getVideoLink(id);
-//        videoPlayIntent.setData(videoLink);
         startActivity(videoPlayIntent);
     }
     
@@ -210,11 +224,14 @@ public class DetailActivity extends AppCompatActivity
 
                 Movie movie = MovieDBUtils.getSingleMovieFromJson(DetailActivity.this, movieSearchResultJson);
                 movie.setVideoLinks();
+                
+                if(isFavorite(movieId)) movie.markFavorite(true);
                 return movie;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
+            
         }
 
         @Override
@@ -228,6 +245,28 @@ public class DetailActivity extends AppCompatActivity
             } else {
                 showErrorMessage();
             }
+        }
+        
+        private boolean isFavorite(int id) {
+            boolean fave;
+            String[] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID };
+            String selection = FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID + " = ?";
+            String[] selectionArgs = { Integer.toString(id) };
+            SQLiteDatabase db = new FavoritesDBHelper(getApplicationContext()).getReadableDatabase();
+            
+            Cursor cursor = db.query(
+                    FavoritesContract.FavoriteEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+            
+            if(cursor.getCount() > 0) fave = true;
+            else fave = false;
+            return fave;
         }
     }
 }
