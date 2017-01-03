@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +27,11 @@ import tech.michaeloverman.android.popularmovies.databinding.ActivityDetailBindi
 import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
+/**
+ * DetailActivity shows small movie poster, title, year of release, rating, synopsis,
+ * button to show reviews, button to mark/unmark movie as favorite, and links to
+ * any available trailers.
+ */
 public class DetailActivity extends AppCompatActivity
         implements VideoLinkAdapter.VideoLinkAdapterOnClickHandler {
 
@@ -37,21 +41,13 @@ public class DetailActivity extends AppCompatActivity
     /* Individual Movie object, holding all the details */
     private Movie mMovie;
 
-    /* Member variables controlling view */
-//    @BindView(R.id.tv_title) TextView mTitle;
-//    @BindView(R.id.iv_movie_poster) ImageView mPoster;
-    ImageView mPoster;
-//    @BindView(R.id.tv_year) TextView mYear;
-//    @BindView(R.id.tv_duration) TextView mDuration;
-//    @BindView(R.id.tv_rating) TextView mRating;
-//    @BindView(R.id.tv_synopsis) TextView mSynopsis;
+    /* Member variables handling view/GUI */
     ActivityDetailBinding mBinding;
+    
+    ImageView mPoster;
     Button mFavoriteButton;
     ImageView mFavoriteStar;
     
-    
-//    @BindView(R.id.tv_detail_error_message) TextView mErrorMessage;
-//    @BindView(R.id.pb_detail_download_indicator) ProgressBar mLoadingIndicator;
     private TextView mErrorMessage;
     private ProgressBar mLoadingIndicator;
     
@@ -61,8 +57,6 @@ public class DetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detail);
-//        ButterKnife.bind(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
         mErrorMessage = (TextView) findViewById(R.id.tv_detail_error_message);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_detail_download_indicator);
@@ -85,7 +79,9 @@ public class DetailActivity extends AppCompatActivity
             }
         }
 
+        /* Do not continue, if there is a problem getting the movie id from the intent extras  */
         if (movieId == -1) this.onStop();
+        
         /* Call background task to get the movie's particulars */
         new GetMovieDetailsTask().execute(movieId);
         
@@ -98,33 +94,30 @@ public class DetailActivity extends AppCompatActivity
     private void showMovieDetails() {
         mErrorMessage.setVisibility(View.INVISIBLE);
 
-//        mTitle.setText(mMovie.getTitle());
         mBinding.titleHeaderLayout.tvTitle.setText(mMovie.getTitle());
         
         Picasso.with(DetailActivity.this)
                 .load(NetworkUtils.buildPosterUrl(mMovie.getPosterUrl()))
                 .into(mPoster);
 
-//        mYear.setText(mMovie.getReleaseYear());
         mBinding.detailInfoLayout.tvYear.setText(mMovie.getReleaseYear());
 
-//        mDuration.setText(mMovie.getDuration() + getString(R.string.minutes_label));
-        mBinding.detailInfoLayout.tvDuration.setText(mMovie.getDuration() + " minutes");
+        mBinding.detailInfoLayout.tvDuration.setText(
+                String.format(getString(R.string.duration_minutes), mMovie.getDuration()));
         
-//        mRating.setText(mMovie.getRating() + getString(R.string.rating_out_of));
-        mBinding.detailInfoLayout.tvRating.setText(mMovie.getRating() + " / 10.0");
+        mBinding.detailInfoLayout.tvRating.setText(
+                String.format(getString(R.string.rating_string), mMovie.getRating()));
         
-//        mSynopsis.setText(mMovie.getSynopsis());
         mBinding.detailInfoLayout.tvSynopsis.setText(mMovie.getSynopsis());
         
-        // check DB for whether marked as Favorite on not
         if(mMovie.isFavorite()) showAsFavorite();
-        // set button text
-        // set star
-        
 
     }
-
+    
+    /**
+     * Button click handling: favorite marking/unmarking, and read reviews
+     * @param view
+     */
     public void buttonClicked(View view) {
         
         switch(view.getId()) {
@@ -136,25 +129,23 @@ public class DetailActivity extends AppCompatActivity
                 break;
             default:
                 
-                
         }
-//        Log.d(TAG, button + " button clicked");
     }
     
+    /**
+     * If movie is marked as favorite, add to or remove from database, and call method to change views
+     * on screen to show new status.
+     */
     public void favoriteButtonClicked() {
+        /* Access database to store new favorite status */
         final SQLiteDatabase db = new FavoritesDBHelper(getApplicationContext()).getWritableDatabase();
         
         if(!mMovie.isFavorite()) {
-            db.beginTransaction();
             ContentValues values = new ContentValues();
             values.put(FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID, mMovie.getId());
             values.put(FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL, mMovie.getPosterUrl());
             
-            Log.d(TAG, "Content Values created: " + values.toString());
-            
             db.insert(FavoritesContract.FavoriteEntry.TABLE_NAME, null, values);
-            db.setTransactionSuccessful();
-            db.endTransaction();
             mMovie.markFavorite(true);
             showAsFavorite();
         } else {
@@ -164,18 +155,28 @@ public class DetailActivity extends AppCompatActivity
             mMovie.markFavorite(false);
             showAsNonFavorite();
         }
+        db.close();
     }
     
+    /**
+     * Set button text and favorite star
+     */
     private void showAsFavorite() {
         mFavoriteButton.setText(R.string.button_text_marked);
         mFavoriteStar.setVisibility(View.VISIBLE);
     }
     
+    /**
+     * Reset button text and favorite star
+     */
     private void showAsNonFavorite() {
         mFavoriteButton.setText(R.string.mark_as_favorite);
         mFavoriteStar.setVisibility(View.INVISIBLE);
     }
     
+    /**
+     * Open activity showing reviews
+     */
     private void openReviewsActivity() {
         Intent reviewsIntent = new Intent(this, ReviewActivity.class);
         reviewsIntent.putExtra(Intent.EXTRA_UID, mMovie.getId());
@@ -190,6 +191,10 @@ public class DetailActivity extends AppCompatActivity
         mErrorMessage.setVisibility(View.VISIBLE);
     }
     
+    /**
+     * Play selected promo video in implicit intent
+     * @param id
+     */
     @Override
     public void onClick(int id) {
         Intent videoPlayIntent = new Intent(Intent.ACTION_VIEW,
@@ -222,10 +227,12 @@ public class DetailActivity extends AppCompatActivity
             try {
                 String movieSearchResultJson = NetworkUtils.getJsonFromUrl(movieUrl);
 
-                Movie movie = MovieDBUtils.getSingleMovieFromJson(DetailActivity.this, movieSearchResultJson);
+                Movie movie = MovieDBUtils.getSingleMovieFromJson(
+                        DetailActivity.this, movieSearchResultJson);
                 movie.setVideoLinks();
                 
                 if(isFavorite(movieId)) movie.markFavorite(true);
+                
                 return movie;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -246,7 +253,13 @@ public class DetailActivity extends AppCompatActivity
                 showErrorMessage();
             }
         }
-        
+    
+        /**
+         * Method to access database to determine whether movie is a marked favorite
+         *
+         * @param id
+         * @return true if in database, false otherwise
+         */
         private boolean isFavorite(int id) {
             boolean fave;
             String[] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID };
@@ -264,8 +277,10 @@ public class DetailActivity extends AppCompatActivity
                     null
             );
             
+            /* If cursor is not empty, movie is in database */
             if(cursor.getCount() > 0) fave = true;
             else fave = false;
+            
             return fave;
         }
     }

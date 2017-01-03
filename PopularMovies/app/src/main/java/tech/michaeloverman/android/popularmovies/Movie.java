@@ -32,7 +32,8 @@ public class Movie {
     private final String rating;
     private final String releaseDate;
     private final int duration;
-//    private final boolean video;
+
+    /* PART 2 variables for holding trailer links and favorite marking */
     private final ArrayList<VideoLink> videoLinks;
     private boolean favorite;
 
@@ -70,9 +71,6 @@ public class Movie {
         return duration;
     }
     
-//    public boolean hasVideo() {
-//        return video;
-//    }
     public boolean isFavorite() {
         return favorite;
     }
@@ -81,6 +79,9 @@ public class Movie {
         favorite = fave;
     }
     
+    /**
+     * Access database to retrieve video links for trailers
+     */
     public void setVideoLinks() {
         try {
             videoLinks.addAll(MovieDBUtils.getVideoLinksFromJson(
@@ -92,12 +93,14 @@ public class Movie {
             e.printStackTrace();
         }
     }
+    
     public ArrayList<VideoLink> getVideoLinks() {
         if(videoLinks != null) return videoLinks;
         else return null;
     }
+    
     public URL getVideoLink(int id) {
-        if(id >= videoLinks.size()) return null;
+        if(id >= videoLinks.size() || id < 0) return null;
         return videoLinks.get(id).getURL();
     }
 

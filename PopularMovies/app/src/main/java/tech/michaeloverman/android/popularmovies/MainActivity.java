@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -207,6 +206,9 @@ public class MainActivity extends AppCompatActivity
             case UPCOMING:
                 label = getString(R.string.pref_upcoming);
                 break;
+            case FAVORITES:
+                label = getString(R.string.pref_favorites);
+                break;
             default:
                 label = getString(R.string.app_name);
         }
@@ -244,6 +246,12 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
     
+    /**
+     * Cursor loader for accessing favorites database
+     * @param id
+     * @param args
+     * @return
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         
@@ -256,6 +264,11 @@ public class MainActivity extends AppCompatActivity
         
     }
     
+    /**
+     * Using cursor to access database, create list of favorite movies
+     * @param loader
+     * @param data
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(data.getCount() != 0) {
@@ -276,6 +289,10 @@ public class MainActivity extends AppCompatActivity
         
     }
     
+    /**
+     * unused method required for implementation of LoaderManager.
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         
@@ -290,7 +307,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPreExecute() {
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
-            Log.d(TAG, "GetMoviesTask, starting");
         }
 
         @Override
@@ -321,7 +337,6 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Movie[] movies) {
-            Log.d(TAG, "GetMoviesTask onPostExecute()");
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movies != null) {
                 showMoviePosters();
@@ -332,32 +347,24 @@ public class MainActivity extends AppCompatActivity
         }
         
         private Movie[] getFavoriteMovies() {
-            Log.d(TAG, "entered getFavoriteMovies()");
             Movie[] movies;
-//            Uri queryUri = FavoritesContract.FavoriteEntry.CONTENT_URI;
-            String[] projection = {FavoritesContract.FavoriteEntry.COLUMN_MOVIE_ID,
-                    FavoritesContract.FavoriteEntry.COLUMN_POSTER_URL};
     
             SQLiteDatabase db = new FavoritesDBHelper(getApplicationContext()).getReadableDatabase();
             
             Cursor cursor = db.query(
                     FavoritesContract.FavoriteEntry.TABLE_NAME,
-                    projection,
+                    MAIN_FAVORITES_PROJECTION,
                     null,
                     null,
                     null,
                     null,
                     null);
-            Log.d(TAG, "cursor created");
             
             int count = cursor.getCount();
-            Log.d(TAG, "cursor count: " + count);
             
             movies = new Movie[count];
             cursor.moveToFirst();
             for (int i = 0; i < count; i++) {
-                Log.d(TAG, "getting favorites loop: " + i);
-//                cursor.move(i);
                 int id = cursor.getInt(INDEX_MOVIE_ID);
                 String url = cursor.getString(INDEX_POSTER_URL);
                 movies[i] = new Movie.Builder(id)

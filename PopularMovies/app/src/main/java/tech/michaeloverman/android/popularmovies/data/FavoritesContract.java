@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
+ * SQLite Database contract for storing movies marked as favorites.
  * Created by Michael on 12/20/2016.
  */
 

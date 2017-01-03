@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import tech.michaeloverman.android.popularmovies.MainActivity;
 
 /**
+ * Class to store and retrieve current search basis/criteria
  * Created by Michael on 12/20/2016.
  */
 

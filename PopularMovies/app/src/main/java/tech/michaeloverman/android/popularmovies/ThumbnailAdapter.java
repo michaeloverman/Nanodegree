@@ -18,7 +18,8 @@ import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
  */
 
 public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.ThumbnailViewHolder> {
-
+    
+    private static final String TAG = "Movie ThumbnailAdapter";
     /* Array of Movies == data */
     private Movie[] mMovies;
 
@@ -52,6 +53,8 @@ public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.Thum
         Movie movie = mMovies[position];
 
         holder.bind(movie.getPosterUrl());
+        
+//        Log.d(TAG, "ThumbnailAdapter onBindViewHolder: " + position);
     }
 
     @Override

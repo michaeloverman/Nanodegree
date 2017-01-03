@@ -12,4 +12,7 @@
     <string name="read_reviews">Read reviews</string>
     <string name="pref_favorites">Favorites</string>
     <string name="button_text_marked">Unmark Favorite</string>
+    <string name="duration_minutes">%1$d minutes</string>
+    <string name="rating_string">%1$s / 10.0</string>
+    <string name="no_reviews_message">Sorry, no reviews of this movie are found. Check back another time.</string>
 </resources>

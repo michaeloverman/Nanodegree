@@ -124,6 +124,13 @@ public final class MovieDBUtils {
         return builder.build();
     }
     
+    /**
+     * Method to parse video (trailer) links from movie JSON string.
+     *
+     * @param videoLinkJsonString
+     * @return
+     * @throws JSONException
+     */
     public static ArrayList<VideoLink> getVideoLinksFromJson(String videoLinkJsonString)
             throws JSONException {
         if(videoLinkJsonString == null || videoLinkJsonString.equals("") ) {
@@ -148,6 +155,13 @@ public final class MovieDBUtils {
         return links;
     }
     
+    /**
+     * Method to parse movie reviews from review JSON string.
+     *
+     * @param reviewJsonString
+     * @return MovieReview[]
+     * @throws JSONException
+     */
     public static MovieReview[] getReviewsFromJson(String reviewJsonString)
             throws JSONException {
         if(reviewJsonString == null || reviewJsonString.equals("")) {
@@ -158,6 +172,7 @@ public final class MovieDBUtils {
         JSONObject reviewsJsonObject = new JSONObject(reviewJsonString);
         JSONArray reviewsArray = reviewsJsonObject.getJSONArray("results");
         MovieReview[] reviews = new MovieReview[reviewsArray.length()];
+
         for (int i=0; i < reviewsArray.length(); i++) {
             JSONObject review = reviewsArray.getJSONObject(i);
             String author = review.getString(AUTHOR_KEY);

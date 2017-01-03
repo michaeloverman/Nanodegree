@@ -3,6 +3,7 @@ package tech.michaeloverman.android.popularmovies;
 import java.net.URL;
 
 /**
+ * Simple class to hold the title and url of each video link.
  * Created by Michael on 12/20/2016.
  */
 

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,17 +19,20 @@ import tech.michaeloverman.android.popularmovies.utilities.MovieDBUtils;
 import tech.michaeloverman.android.popularmovies.utilities.NetworkUtils;
 
 /**
+ * Activity to display reviews of specific movies.
  * Created by Michael on 12/20/2016.
  */
 
 public class ReviewActivity extends AppCompatActivity {
     private static final String TAG = ReviewActivity.class.getSimpleName();
     
+    /* Member variables */
     private String mTitle;
-    private int id;
+    private int mId;
     
     private ArrayList<MovieReview> mReviews;
     
+    /* Layout variables */
     private RecyclerView mRecyclerView;
     private TextView mTitleView;
     private MovieReviewAdapter mReviewAdapter;
@@ -38,6 +42,7 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Starting Review Activity onCreate()");
         setContentView(R.layout.activity_reviews);
         
         mTitleView = (TextView) findViewById(R.id.tv_reviews_title);
@@ -50,22 +55,25 @@ public class ReviewActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mReviewAdapter = new MovieReviewAdapter(this);
         
-        
+        /* Get the movie details from the initiating intent */
         Intent intent = this.getIntent();
-        id = -1;
+        mId = -1;
         mTitle = "";
         if(intent != null) {
             if(intent.hasExtra(Intent.EXTRA_UID)) {
-                id = intent.getIntExtra(Intent.EXTRA_UID, -1);
+                mId = intent.getIntExtra(Intent.EXTRA_UID, -1);
             }
             if(intent.hasExtra(DetailActivity.MOVIE_TITLE_EXTRA)) {
                 mTitle = intent.getStringExtra(DetailActivity.MOVIE_TITLE_EXTRA);
                 mTitleView.setText(mTitle);
             }
         }
-        new GetReviewsTask().execute(id);
+        
+        /* With the movie details (mId!), fetch the data and set on the recycler view */
+        new GetReviewsTask().execute(mId);
         mRecyclerView.setAdapter(mReviewAdapter);
     }
+    
     /**
      * If review info does not download, display error message.
      */
@@ -73,6 +81,9 @@ public class ReviewActivity extends AppCompatActivity {
         mErrorMessage.setVisibility(View.VISIBLE);
     }
     
+    /**
+     * AsyncTask to fetch reviews from online database.
+     */
     private class GetReviewsTask extends AsyncTask<Integer, Void, MovieReview[]> {
     
         @Override
@@ -112,6 +123,10 @@ public class ReviewActivity extends AppCompatActivity {
             } else {
                 showErrorMessage();
             }
+            /* Nougat was setting up the recycler view so fast, the data was not getting there in time.
+             * This call solves that problem.
+             */
+            mRecyclerView.requestLayout();
         }
     }
 }

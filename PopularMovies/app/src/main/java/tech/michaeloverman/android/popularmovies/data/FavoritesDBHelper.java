@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
+ * Helper class for accessing SQLite database of movies marked as favorites.
+ *
  * Created by Michael on 12/20/2016.
  */
 

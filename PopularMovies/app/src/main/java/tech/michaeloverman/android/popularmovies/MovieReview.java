@@ -1,23 +1,24 @@
 package tech.michaeloverman.android.popularmovies;
 
 /**
+ * Simple class to hold individual review and author's name
  * Created by Michael on 12/20/2016.
  */
 
 public class MovieReview {
-    private String author;
-    private String review;
+    private String mAuthor;
+    private String mReview;
     
     public MovieReview(String author, String review) {
-        this.author = author;
-        this.review = review;
+        mAuthor = author;
+        mReview = review;
     }
     
     public String getAuthor() {
-        return author;
+        return mAuthor;
     }
     
     public String getReview() {
-        return review;
+        return mReview;
     }
 }

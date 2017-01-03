@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 
 /**
+ * This class handles the links to videos (trailers) in the DetailActivity.
  * Created by Michael on 12/20/2016.
  */
 
@@ -19,17 +20,22 @@ public class VideoLinkAdapter extends
         RecyclerView.Adapter<VideoLinkAdapter.VideoLinkAdapterViewHolder> {
     
     private static final String TAG = VideoLinkAdapter.class.getSimpleName();
+    
+    /* Member Variables */
     private final Context mContext;
     private final VideoLinkAdapterOnClickHandler mClickHandler;
     
     private ArrayList<VideoLink> videos;
     
+    /* Interface for handling clicks on the links */
     public interface VideoLinkAdapterOnClickHandler {
         void onClick(int id);
     }
+    
     public void setLinkData(ArrayList<VideoLink> links) {
         videos = links;
     }
+    
     public VideoLinkAdapter(Context context, VideoLinkAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
@@ -45,7 +51,6 @@ public class VideoLinkAdapter extends
     
     @Override
     public void onBindViewHolder(VideoLinkAdapter.VideoLinkAdapterViewHolder holder, int position) {
-//        Log.d(TAG, "Binding ViewHolder position: " + position);
         VideoLink link = videos.get(position);
         holder.titleView.setText(link.getTitle());
     }
