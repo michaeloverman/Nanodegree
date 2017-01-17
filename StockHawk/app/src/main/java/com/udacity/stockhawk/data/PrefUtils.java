@@ -10,23 +10,26 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import timber.log.Timber;
+
 public final class PrefUtils {
 
+    public static final String PREF_STOCKS_KEY = "stocks";
     private PrefUtils() {
     }
 
     public static Set<String> getStocks(Context context) {
         String stocksKey = context.getString(R.string.pref_stocks_key);
         String initializedKey = context.getString(R.string.pref_stocks_initialized_key);
-        String[] defaultStocksList = context.getResources().getStringArray(R.array.default_stocks);
-
-        HashSet<String> defaultStocks = new HashSet<>(Arrays.asList(defaultStocksList));
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
 
         boolean initialized = prefs.getBoolean(initializedKey, false);
 
         if (!initialized) {
+            String[] defaultStocksList = context.getResources().getStringArray(R.array.default_stocks);
+            HashSet<String> defaultStocks = new HashSet<>(Arrays.asList(defaultStocksList));
+            
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(initializedKey, true);
             editor.putStringSet(stocksKey, defaultStocks);
@@ -38,7 +41,6 @@ public final class PrefUtils {
     }
 
     private static void editStockPref(Context context, String symbol, Boolean add) {
-        String key = context.getString(R.string.pref_stocks_key);
         Set<String> stocks = getStocks(context);
 
         if (add) {
@@ -47,13 +49,25 @@ public final class PrefUtils {
             stocks.remove(symbol);
         }
 
+        Timber.d("Stocks in database: " + stocks);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(key, stocks);
+
+        editor.remove(PREF_STOCKS_KEY);
+        editor.apply();
+
+        editor.putStringSet(PREF_STOCKS_KEY, stocks);
         editor.apply();
     }
 
+    public static void commitPrefs(Context context) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.commit();
+    }
+
     public static void addStock(Context context, String symbol) {
+        Timber.d("PrefUtils addStock()");
         editStockPref(context, symbol, true);
     }
 

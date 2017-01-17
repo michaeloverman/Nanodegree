@@ -1,13 +1,19 @@
 package com.udacity.stockhawk.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,15 +30,23 @@ import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
         StockAdapter.StockAdapterOnClickHandler {
 
     private static final int STOCK_LOADER = 0;
+    private static final int VALIDATE_STOCK = 777;
+    public static final String INVALID_STOCK_SYMBOL = "invalidstocksymbol";
+    public static final String INVALID_STOCK_MESSAGE = "invalidstockmessage";
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
     RecyclerView stockRecyclerView;
@@ -52,6 +66,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.d("onCreate()");
+        if(savedInstanceState != null) {
+            Timber.d("Nonnull savedInstanceState");
+            String[] stocks = savedInstanceState.getStringArray("stocks");
+            Timber.d(stocks + " retrieved from savedInstanceState");
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+            Set<String> set = new HashSet<>(Arrays.asList(stocks));
+            editor.putStringSet(PrefUtils.PREF_STOCKS_KEY, set);
+            editor.apply();
+        } else {
+            Timber.d("savedInstanceState was evidently null..");
+        }
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -77,12 +103,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 String symbol = adapter.getSymbolAtPosition(viewHolder.getAdapterPosition());
                 PrefUtils.removeStock(MainActivity.this, symbol);
-                getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+//                getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+                QuoteSyncJob.removeStockFromDB(MainActivity.this, symbol);
             }
         }).attachToRecyclerView(stockRecyclerView);
 
 
     }
+
+
 
     private boolean networkUp() {
         ConnectivityManager cm =
@@ -93,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onRefresh() {
-
+        Timber.d("onRefresh() calling syncImmediately()");
         QuoteSyncJob.syncImmediately(this);
 
         if (!networkUp() && adapter.getItemCount() == 0) {
@@ -117,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     void addStock(String symbol) {
+        Timber.d("MainActivity addStock()");
         if (symbol != null && !symbol.isEmpty()) {
 
             if (networkUp()) {
@@ -132,6 +162,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
+    protected void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mLocalBroadcastReceiver, new IntentFilter(INVALID_STOCK_SYMBOL));
+        super.onResume();
+    }
+
+    private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(INVALID_STOCK_MESSAGE);
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this,
                 Contract.Quote.URI,
@@ -142,13 +187,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         swipeRefreshLayout.setRefreshing(false);
-
+        
         if (data.getCount() != 0) {
             error.setVisibility(View.GONE);
+        } else {
+            error.setVisibility(View.VISIBLE);
+            updateEmptyView();
         }
         adapter.setCursor(data);
     }
 
+    private void updateEmptyView() {
+        if(adapter.getItemCount() == 0) {
+            TextView tv = (TextView) findViewById(R.id.error);
+            int message = R.string.empty_stock_list_message;
+            int problem = StockAdapter.getStatus(this);
+            switch(problem) {
+                case StockAdapter.NO_STOCKS_IN_LIST:
+                    message = R.string.error_no_stocks;
+                    break;
+                default:
+            }
+            tv.setText(message);
+        }
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -185,5 +247,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalBroadcastReceiver);
+        super.onPause();
+        Timber.d("onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Timber.d("onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDestroy()");
     }
 }

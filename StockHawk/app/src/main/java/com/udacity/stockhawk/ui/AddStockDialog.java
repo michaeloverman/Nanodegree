@@ -19,6 +19,7 @@ import com.udacity.stockhawk.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 
 public class AddStockDialog extends DialogFragment {
@@ -40,7 +41,14 @@ public class AddStockDialog extends DialogFragment {
         stock.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                addStock();
+                String stockCode = stock.getText().toString();
+                Timber.d("Adding new Stock: " + stockCode);
+//                if(QuoteSyncJob.isValidStock(stockCode)) {
+                    addStock();
+//                } else {
+                    // TODO Message about invalid stock, try again
+//                    return false;
+//                }
                 return true;
             }
         });
@@ -66,6 +74,7 @@ public class AddStockDialog extends DialogFragment {
     }
 
     private void addStock() {
+        Timber.d("Dialog addStock()");
         Activity parent = getActivity();
         if (parent instanceof MainActivity) {
             ((MainActivity) parent).addStock(stock.getText().toString());

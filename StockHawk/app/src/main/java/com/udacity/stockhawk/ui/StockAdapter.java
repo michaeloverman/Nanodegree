@@ -22,6 +22,8 @@ import butterknife.ButterKnife;
 
 class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
+    public static final int NO_STOCKS_IN_LIST = 0;
+    
     private final Context context;
     private final DecimalFormat dollarFormatWithPlus;
     private final DecimalFormat dollarFormat;
@@ -33,6 +35,7 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
         this.context = context;
         this.clickHandler = clickHandler;
 
+        // TODO change locale to determine from phone, not hard-code
         dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
         dollarFormatWithPlus = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
         dollarFormatWithPlus.setPositivePrefix("+$");
@@ -101,8 +104,12 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
         }
         return count;
     }
-
-
+    
+    public static int getStatus(Context context) {
+        return 0;
+    }
+    
+    
     interface StockAdapterOnClickHandler {
         void onClick(String symbol);
     }

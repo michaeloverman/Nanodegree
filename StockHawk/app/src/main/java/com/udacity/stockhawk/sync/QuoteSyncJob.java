@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.LocalBroadcastManager;
 
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
+import com.udacity.stockhawk.ui.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ public final class QuoteSyncJob {
 
     static void getQuotes(Context context) {
 
-        Timber.d("Running sync job");
+        Timber.d("getQuotes() -- Running sync job");
 
         Calendar from = Calendar.getInstance();
         Calendar to = Calendar.getInstance();
@@ -53,7 +56,7 @@ public final class QuoteSyncJob {
             Set<String> stockPref = PrefUtils.getStocks(context);
             Set<String> stockCopy = new HashSet<>();
             stockCopy.addAll(stockPref);
-            String[] stockArray = stockPref.toArray(new String[stockPref.size()]);
+            String[] stockArray = stockCopy.toArray(new String[stockCopy.size()]);
 
             Timber.d(stockCopy.toString());
 
@@ -74,7 +77,16 @@ public final class QuoteSyncJob {
 
                 Stock stock = quotes.get(symbol);
                 StockQuote quote = stock.getQuote();
-
+                
+                if(quote.getPrice() == null) {
+                    Timber.d("Invalid Stock Symbol: " + symbol);
+                    quotes.remove(symbol);
+                    PrefUtils.removeStock(context, symbol);
+                    removeStockFromDB(context, symbol);
+                    invalidSymbolMessage(context, symbol);
+                    continue;
+                }
+                
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
@@ -106,8 +118,7 @@ public final class QuoteSyncJob {
             }
 
             context.getContentResolver()
-                    .bulkInsert(
-                            Contract.Quote.URI,
+                    .bulkInsert(Contract.Quote.URI,
                             quoteCVs.toArray(new ContentValues[quoteCVs.size()]));
 
             Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
@@ -118,6 +129,21 @@ public final class QuoteSyncJob {
         }
     }
 
+    private static void invalidSymbolMessage(Context context, String symbol) {
+        String message = context.getString(R.string.toast_invalid_stock_symbol, symbol);
+        Timber.d(message);
+        Timber.d("Sending broadcast back to Main");
+        Intent intent = new Intent(MainActivity.INVALID_STOCK_SYMBOL);
+        intent.putExtra(MainActivity.INVALID_STOCK_MESSAGE, message);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    public static void removeStockFromDB(Context context, String symbol) {
+        int i = context.getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+        Timber.d(i + " rows deleted from DB");
+
+    }
+    
     private static void schedulePeriodic(Context context) {
         Timber.d("Scheduling a periodic task");
 
@@ -144,7 +170,7 @@ public final class QuoteSyncJob {
     }
 
     public static synchronized void syncImmediately(Context context) {
-
+        Timber.d("syncImmediately()");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -167,6 +193,6 @@ public final class QuoteSyncJob {
 
         }
     }
-
+    
 
 }
