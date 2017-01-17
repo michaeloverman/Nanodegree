@@ -58,10 +58,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     TextView error;
     private StockAdapter adapter;
 
-    @Override
-    public void onClick(String symbol) {
-        Timber.d("Symbol clicked: %s", symbol);
-    }
+    private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(INVALID_STOCK_MESSAGE);
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +114,42 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    @Override
+    protected void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mLocalBroadcastReceiver, new IntentFilter(INVALID_STOCK_SYMBOL));
+        super.onResume();
+    }
 
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalBroadcastReceiver);
+        super.onPause();
+        Timber.d("onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Timber.d("onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Timber.d("onDestroy()");
+    }
 
     private boolean networkUp() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
+    @Override
+    public void onClick(String symbol) {
+        Timber.d("Symbol clicked: %s", symbol);
     }
 
     @Override
@@ -155,26 +187,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String message = getString(R.string.toast_stock_added_no_connectivity, symbol);
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
-
             PrefUtils.addStock(this, symbol);
             QuoteSyncJob.syncImmediately(this);
         }
     }
-
-    @Override
-    protected void onResume() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mLocalBroadcastReceiver, new IntentFilter(INVALID_STOCK_SYMBOL));
-        super.onResume();
-    }
-
-    private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra(INVALID_STOCK_MESSAGE);
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -250,22 +266,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalBroadcastReceiver);
-        super.onPause();
-        Timber.d("onPause()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Timber.d("onStop()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Timber.d("onDestroy()");
-    }
 }

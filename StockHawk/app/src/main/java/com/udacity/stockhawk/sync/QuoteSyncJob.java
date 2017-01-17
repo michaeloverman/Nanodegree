@@ -76,9 +76,8 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
-                StockQuote quote = stock.getQuote();
-                
-                if(quote.getPrice() == null) {
+                String companyName = stock.getName();
+                if(companyName == null || companyName.equals("")) {
                     Timber.d("Invalid Stock Symbol: " + symbol);
                     quotes.remove(symbol);
                     PrefUtils.removeStock(context, symbol);
@@ -86,7 +85,8 @@ public final class QuoteSyncJob {
                     invalidSymbolMessage(context, symbol);
                     continue;
                 }
-                
+
+                StockQuote quote = stock.getQuote();
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
@@ -109,7 +109,7 @@ public final class QuoteSyncJob {
                 quoteCV.put(Contract.Quote.COLUMN_PRICE, price);
                 quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
                 quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
-
+                quoteCV.put(Contract.Quote.COLUMN_COMPANY_NAME, companyName);
 
                 quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
 

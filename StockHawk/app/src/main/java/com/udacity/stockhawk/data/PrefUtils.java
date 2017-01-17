@@ -61,11 +61,6 @@ public final class PrefUtils {
         editor.apply();
     }
 
-    public static void commitPrefs(Context context) {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        editor.commit();
-    }
-
     public static void addStock(Context context, String symbol) {
         Timber.d("PrefUtils addStock()");
         editStockPref(context, symbol, true);
