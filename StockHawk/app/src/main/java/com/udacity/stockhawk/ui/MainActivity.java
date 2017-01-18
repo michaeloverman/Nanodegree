@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int VALIDATE_STOCK = 777;
     public static final String INVALID_STOCK_SYMBOL = "invalidstocksymbol";
     public static final String INVALID_STOCK_MESSAGE = "invalidstockmessage";
+    public static final String STOCK_SYMBOL_EXTRA = "stocksymbolextra";
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
     RecyclerView stockRecyclerView;
@@ -150,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
+        Intent intent = new Intent(this, DetailActivity.class)
+                .putExtra(STOCK_SYMBOL_EXTRA, symbol);
+        startActivity(intent);
     }
 
     @Override
@@ -213,6 +217,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.setCursor(data);
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        swipeRefreshLayout.setRefreshing(false);
+        adapter.setCursor(null);
+    }
+
     private void updateEmptyView() {
         if(adapter.getItemCount() == 0) {
             TextView tv = (TextView) findViewById(R.id.error);
@@ -226,12 +236,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
             tv.setText(message);
         }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        swipeRefreshLayout.setRefreshing(false);
-        adapter.setCursor(null);
     }
 
 
