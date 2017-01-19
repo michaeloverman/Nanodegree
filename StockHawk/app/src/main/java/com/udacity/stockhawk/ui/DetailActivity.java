@@ -44,6 +44,8 @@ public class DetailActivity extends AppCompatActivity
 //    TextView mCompanyName;
     LineChart mGraph;
     TextView mCurrentValueView;
+    TextView mDailyHiLoView;
+    TextView mAnnualHiLoView;
     float mCurrentValue;
     String[] xAxisLabels;
 
@@ -60,6 +62,8 @@ public class DetailActivity extends AppCompatActivity
 //        mCompanyName = (TextView) findViewById(R.id.detail_company_name);
         mGraph = (LineChart) findViewById(R.id.detail_line_graph);
         mCurrentValueView = (TextView) findViewById(R.id.detail_current_value);
+        mDailyHiLoView = (TextView) findViewById(R.id.detail_daily_hilo_value);
+        mAnnualHiLoView = (TextView) findViewById(R.id.detail_annual_hilo_value);
 
         Intent intent = this.getIntent();
         mStockSymbol = intent.getStringExtra(MainActivity.STOCK_SYMBOL_EXTRA);
@@ -69,6 +73,9 @@ public class DetailActivity extends AppCompatActivity
 
         Timber.d("calling loaderManager()");
         getSupportLoaderManager().initLoader(DETAIL_LOADER, null, this);
+
+
+        this.supportStartPostponedEnterTransition();
     }
 
     private void getAllTheDetails(Cursor data) {
@@ -77,9 +84,12 @@ public class DetailActivity extends AppCompatActivity
         String name = data.getString(Contract.Quote.POSITION_COMPANY_NAME);
         setTitle(name);
         mCurrentValue = data.getFloat(Contract.Quote.POSITION_PRICE);
+        mCurrentValueView.setText(dollarFormat.format(mCurrentValue));
+        mDailyHiLoView.setText(data.getString(Contract.Quote.POSITION_DAILY_HILO));
+        mAnnualHiLoView.setText(data.getString(Contract.Quote.POSITION_ANNUAL_HILO));
+
         mStockHistoryString = data.getString(Contract.Quote.POSITION_HISTORY);
 //        mCompanyName.setText(name);
-        mCurrentValueView.setText(dollarFormat.format(mCurrentValue));
 
         List<Entry> entries = parseDataString(mStockHistoryString);
         LineDataSet dataSet = new LineDataSet(entries, "Stock Price");
@@ -100,13 +110,15 @@ public class DetailActivity extends AppCompatActivity
         ArrayList<Entry> entries = new ArrayList<>();
         String[] lines = history.split("\\n");
         xAxisLabels = new String[lines.length];
-        for(int i = 0; i < lines.length; i++) {
+        int dataPosition = 0;
+        for(int i = lines.length - 1; i >= 0; i--) {
             String[] data = lines[i].split(",");
 //            float date = Float.parseFloat(data[0]);
             float close = Float.parseFloat(data[1]);
-            entries.add(new Entry(i, close));
-            xAxisLabels[i] = data[0];
+            entries.add(new Entry(dataPosition, close));
+            xAxisLabels[dataPosition] = data[0];
 //            Timber.d("Entry: " + date + ", " + close);
+            dataPosition++;
         }
 //        Timber.d(entries.size() + " entries made");
         return entries;

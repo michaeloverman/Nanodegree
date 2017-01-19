@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_data_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_alignParentBottom="true"
+    tools:showIn="@layout/activity_detail">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/detail_current_value_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/detail_data_inner_margin"
+            android:layout_marginEnd="@dimen/detail_data_inner_margin"
+            android:text="@string/current_value_label"
+            android:textSize="@dimen/detail_data_label_text" />
+
+        <TextView
+            android:id="@+id/detail_current_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="$42.17"
+            android:textSize="@dimen/detail_data_text_size"
+            android:transitionName="@string/trans_price_view_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/detail_daily_hilo_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/daily_high_low_label"
+            android:textSize="@dimen/detail_data_label_text"
+            android:layout_marginRight="@dimen/detail_data_inner_margin"
+            android:layout_marginEnd="@dimen/detail_data_inner_margin"/>
+
+        <TextView
+            android:id="@+id/detail_daily_hilo_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="$42.17"
+            android:textSize="@dimen/detail_data_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/detail_annual_hilo_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_data_label_text"
+            android:text="@string/annual_high_low_label"
+            android:layout_marginRight="@dimen/detail_data_inner_margin"
+            android:layout_marginEnd="@dimen/detail_data_inner_margin"/>
+
+        <TextView
+            android:id="@+id/detail_annual_hilo_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="$42.17"
+            android:textSize="@dimen/detail_data_text_size" />
+    </LinearLayout>
+</LinearLayout>

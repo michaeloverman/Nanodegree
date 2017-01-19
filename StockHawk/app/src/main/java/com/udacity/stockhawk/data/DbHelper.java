@@ -28,6 +28,8 @@ class DbHelper extends SQLiteOpenHelper {
                 + Quote.COLUMN_PERCENTAGE_CHANGE + " REAL NOT NULL, "
                 + Quote.COLUMN_HISTORY + " TEXT NOT NULL, "
                 + Quote.COLUMN_COMPANY_NAME + " TEXT NOT NULL, "
+                + Quote.COLUMN_DAILY_HILO + " TEXT NOT NULL, "
+                + Quote.COLUMN_ANNUAL_HILO + " TEXT NOT NULL, "
                 + "UNIQUE (" + Quote.COLUMN_SYMBOL + ") ON CONFLICT REPLACE);";
 
         db.execSQL(builder);

@@ -16,11 +16,13 @@ import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.ui.MainActivity;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -90,6 +92,22 @@ public final class QuoteSyncJob {
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
+                String dailyHiLo;
+                if(quote.getDayHigh() != null) {
+                    float dailyHigh = quote.getDayHigh().floatValue();
+                    float dailyLow = quote.getDayLow().floatValue();
+                    dailyHiLo = context.getString(R.string.hi_lo_slash_string,
+                            DecimalFormat.getCurrencyInstance(Locale.US).format(dailyHigh),
+                            DecimalFormat.getCurrencyInstance(Locale.US).format(dailyLow));
+                } else {
+                    dailyHiLo = context.getString(R.string.no_daily_trading_empty_string);
+                }
+                float annualHigh = quote.getYearHigh().floatValue();
+                float annualLow = quote.getYearLow().floatValue();
+                String annualHiLo = context.getString(R.string.hi_lo_slash_string,
+                        DecimalFormat.getCurrencyInstance(Locale.US).format(annualHigh),
+                        DecimalFormat.getCurrencyInstance(Locale.US).format(annualLow));
+
 
                 // WARNING! Don't request historical data for a stock that doesn't exist!
                 // The request will hang forever X_x
@@ -110,6 +128,8 @@ public final class QuoteSyncJob {
                 quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
                 quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
                 quoteCV.put(Contract.Quote.COLUMN_COMPANY_NAME, companyName);
+                quoteCV.put(Contract.Quote.COLUMN_DAILY_HILO, dailyHiLo);
+                quoteCV.put(Contract.Quote.COLUMN_ANNUAL_HILO, annualHiLo);
 
                 quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
 

@@ -33,5 +33,11 @@
     <string name="toast_no_connectivity">Will refresh when network available.</string>
     <string name="toast_invalid_stock_symbol">%s is not a valid stock symbol. Please try again...</string>
     <string name="empty_stock_list_message">No Stock Information Available</string>
+    <string name="hi_lo_slash_string">%1$s / %2$s</string>
+    <string name="current_value_label">Current Value:</string>
+    <string name="daily_high_low_label">Daily High/Low:</string>
+    <string name="annual_high_low_label">Annual High/Low:</string>
+    <string name="trans_price_view_name">Trans_Price_View</string>
+    <string name="no_daily_trading_empty_string">-.-- / -.--</string>
 
 </resources>

@@ -10,10 +10,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Timber.d("onCreate()");
         if(savedInstanceState != null) {
             Timber.d("Nonnull savedInstanceState");
@@ -149,11 +152,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onClick(String symbol) {
+    public void onClick(String symbol, View priceView) {
         Timber.d("Symbol clicked: %s", symbol);
         Intent intent = new Intent(this, DetailActivity.class)
                 .putExtra(STOCK_SYMBOL_EXTRA, symbol);
-        startActivity(intent);
+        ActivityOptionsCompat activityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                        new Pair<View, String>(priceView, getString(R.string.trans_price_view_name)));
+        this.startActivity(intent, activityOptions.toBundle());
     }
 
     @Override

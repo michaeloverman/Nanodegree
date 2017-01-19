@@ -26,6 +26,8 @@ public final class Contract {
         public static final String COLUMN_PERCENTAGE_CHANGE = "percentage_change";
         public static final String COLUMN_HISTORY = "history";
         public static final String COLUMN_COMPANY_NAME = "name";
+        public static final String COLUMN_DAILY_HILO = "daily_hi_lo";
+        public static final String COLUMN_ANNUAL_HILO = "annual_hi_lo";
         public static final int POSITION_ID = 0;
         public static final int POSITION_SYMBOL = 1;
         public static final int POSITION_PRICE = 2;
@@ -33,6 +35,8 @@ public final class Contract {
         public static final int POSITION_PERCENTAGE_CHANGE = 4;
         public static final int POSITION_HISTORY = 5;
         public static final int POSITION_COMPANY_NAME = 6;
+        public static final int POSITION_DAILY_HILO = 7;
+        public static final int POSITION_ANNUAL_HILO = 8;
         public static final ImmutableList<String> QUOTE_COLUMNS = ImmutableList.of(
                 _ID,
                 COLUMN_SYMBOL,
@@ -40,7 +44,9 @@ public final class Contract {
                 COLUMN_ABSOLUTE_CHANGE,
                 COLUMN_PERCENTAGE_CHANGE,
                 COLUMN_HISTORY,
-                COLUMN_COMPANY_NAME
+                COLUMN_COMPANY_NAME,
+                COLUMN_DAILY_HILO,
+                COLUMN_ANNUAL_HILO
         );
         static final String TABLE_NAME = "quotes";
 
