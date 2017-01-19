@@ -5,8 +5,10 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin">
 
     <TextView
         android:id="@+id/symbol"
@@ -27,7 +29,8 @@
             style="@style/BidPriceTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10sp"
+            android:layout_marginEnd="@dimen/list_item_price_change_spacing"
+            android:layout_marginRight="@dimen/list_item_price_change_spacing"
             tools:text="1000.00"
             android:transitionName="@string/trans_price_view_name"/>
 
@@ -37,8 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/percent_change_pill_green"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingLeft="@dimen/list_item_change_padding"
+            android:paddingRight="@dimen/list_item_change_padding"
+            android:paddingStart="@dimen/list_item_change_padding"
+            android:paddingEnd="@dimen/list_item_change_padding"
             tools:text="100%" />
     </LinearLayout>
 </LinearLayout>

@@ -1,43 +1,44 @@
 <resources>
     <string name="app_name">Stock Hawk</string>
 
+    <!--Key strings used for storing data-->
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
-
     <string name="pref_stocks_key" translatable="false">stocks</string>
-
-
     <string name="pref_display_mode_key" translatable="false">displayMode</string>
     <string name="pref_display_mode_default" translatable="false">@string/pref_display_mode_percentage_key</string>
-
     <string name="pref_display_mode_absolute_key" translatable="false">absolute</string>
     <string name="pref_display_mode_percentage_key" translatable="false">percentage</string>
 
+    <string name="action_change_units" translatable="false">@string/pref_display_mode_key</string>
+
+    <!--Default stock symbols-->
     <string name="default_stocks_yahoo" translatable="false">YHOO</string>
     <string name="default_stocks_apple" translatable="false">AAPL</string>
     <string name="default_stocks_microsoft" translatable="false">MSFT</string>
     <string name="default_stocks_facebook" translatable="false">LUV</string>
 
-
-    <string name="action_change_units" translatable="false">@string/pref_display_mode_key</string>
-
-
+    <!--Dialog Box for adding new stocks-->
     <string name="dialog_title">Add Stock</string>
     <string name="dialog_hint">Symbol (e.g. GOOG)</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add">Add</string>
 
-    <string name="error_no_network">No network connectivity! Will load stock cursor when the network is available.</string>
+    <!--Error messages-->
+    <string name="error_no_network">No network connectivity! Will load current data when the network is available.</string>
     <string name="error_no_stocks">No stocks added! Hit the floating action button to add one.</string>
-
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
     <string name="toast_invalid_stock_symbol">%s is not a valid stock symbol. Please try again...</string>
     <string name="empty_stock_list_message">No Stock Information Available</string>
-    <string name="hi_lo_slash_string">%1$s / %2$s</string>
+
+    <!--Detail view labels, etc-->
+    <string name="hi_lo_slash_string" translatable="false">%1$s / %2$s</string>
     <string name="current_value_label">Current Value:</string>
     <string name="daily_high_low_label">Daily High/Low:</string>
     <string name="annual_high_low_label">Annual High/Low:</string>
-    <string name="trans_price_view_name">Trans_Price_View</string>
-    <string name="no_daily_trading_empty_string">-.-- / -.--</string>
+    <string name="no_daily_trading_empty_string" translatable="false">-.-- / -.--</string>
+
+    <!--Activity transition key-->
+    <string name="trans_price_view_name" translatable="false">Trans_Price_View</string>
 
 </resources>

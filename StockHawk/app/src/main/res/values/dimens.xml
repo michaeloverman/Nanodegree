@@ -3,5 +3,8 @@
     <dimen name="detail_data_text_size">18sp</dimen>
     <dimen name="detail_data_label_text">14sp</dimen>
     <dimen name="graph_padding">2dp</dimen>
-    <dimen name="detail_data_inner_margin">4dp</dimen>
+    <dimen name="detail_data_inner_margin">@dimen/average_small_margin</dimen>
+    <dimen name="average_small_margin">4dp</dimen>
+    <dimen name="list_item_price_change_spacing">10sp</dimen>
+    <dimen name="list_item_change_padding">3dp</dimen>
 </resources>

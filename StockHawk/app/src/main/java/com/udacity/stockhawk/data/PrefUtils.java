@@ -44,7 +44,8 @@ public final class PrefUtils {
         Set<String> stocks = getStocks(context);
 
         if (add) {
-            stocks.add(symbol);
+            if(!stocks.contains(symbol))
+                stocks.add(symbol);
         } else {
             stocks.remove(symbol);
         }
