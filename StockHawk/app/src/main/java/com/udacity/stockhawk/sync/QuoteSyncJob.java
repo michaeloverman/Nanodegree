@@ -157,6 +157,7 @@ public final class QuoteSyncJob {
                     .bulkInsert(Contract.Quote.URI,
                             quoteCVs.toArray(new ContentValues[quoteCVs.size()]));
 
+            // Notify of data update
             Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
             context.sendBroadcast(dataUpdatedIntent);
 
@@ -190,6 +191,8 @@ public final class QuoteSyncJob {
 
     public static void removeStockFromDB(Context context, String symbol) {
         int i = context.getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+
+        // Notify of data update
         Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
         context.sendBroadcast(dataUpdatedIntent);
         Timber.d(i + " rows deleted from DB");
@@ -197,16 +200,12 @@ public final class QuoteSyncJob {
     }
     
     private static void schedulePeriodic(Context context) {
-        Timber.d("Scheduling a periodic task");
-
 
         JobInfo.Builder builder = new JobInfo.Builder(PERIODIC_ID, new ComponentName(context, QuoteJobService.class));
-
 
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPeriodic(PERIOD)
                 .setBackoffCriteria(INITIAL_BACKOFF, JobInfo.BACKOFF_POLICY_EXPONENTIAL);
-
 
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
