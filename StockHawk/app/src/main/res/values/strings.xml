@@ -40,5 +40,8 @@
 
     <!--Activity transition key-->
     <string name="trans_price_view_name" translatable="false">Trans_Price_View</string>
+    <string name="no_network_error_message">No network connection. Data is not current. Will update when network reestablished.</string>
+    <string name="title_widget">Stock Hawk Widget</string>
+    <string name="no_info_to_show">There is no current stock data to display.</string>
 
 </resources>

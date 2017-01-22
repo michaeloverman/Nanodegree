@@ -7,4 +7,15 @@
     <dimen name="average_small_margin">4dp</dimen>
     <dimen name="list_item_price_change_spacing">10sp</dimen>
     <dimen name="list_item_change_padding">3dp</dimen>
+
+    <dimen name="widget_default_height">110dp</dimen>
+    <dimen name="widget_default_width">180dp</dimen>
+    <dimen name="widget_min_resize_height">@dimen/widget_default_height</dimen>
+    <dimen name="widget_min_resize_width">110dp</dimen>
+    <dimen name="widget_margin">4dp</dimen>
+    <dimen name="widget_header_text_size">24dp</dimen>
+    <dimen name="widget_break_point">150dp</dimen>
+    <dimen name="widget_list_item_height">36dp</dimen>
+    <dimen name="widget_list_item_padding">4dp</dimen>
+    <!--?android:attr/listPreferredItemHeight-->
 </resources>

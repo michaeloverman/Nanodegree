@@ -36,7 +36,7 @@ import yahoofinance.quotes.stock.StockQuote;
 public final class QuoteSyncJob {
 
     private static final int ONE_OFF_ID = 2;
-    private static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
+    public static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
     private static final int PERIOD = 300000;
     private static final int INITIAL_BACKOFF = 10000;
     private static final int PERIODIC_ID = 1;
@@ -54,6 +54,14 @@ public final class QuoteSyncJob {
         from.add(Calendar.YEAR, -YEARS_OF_HISTORY);
 
         try {
+
+            ConnectivityManager cm =
+                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
+                noNetworkMessage(context);
+                return;
+            }
 
             Set<String> stockPref = PrefUtils.getStocks(context);
             Set<String> stockCopy = new HashSet<>();
@@ -82,16 +90,24 @@ public final class QuoteSyncJob {
                 if(companyName == null || companyName.equals("")) {
                     Timber.d("Invalid Stock Symbol: " + symbol);
                     quotes.remove(symbol);
-                    PrefUtils.removeStock(context, symbol);
-                    removeStockFromDB(context, symbol);
-                    invalidSymbolMessage(context, symbol);
+                    invalidSymbol(context, symbol);
                     continue;
                 }
 
+
                 StockQuote quote = stock.getQuote();
-                float price = quote.getPrice().floatValue();
-                float change = quote.getChange().floatValue();
-                float percentChange = quote.getChangeInPercent().floatValue();
+//                Timber.d(stock.toString() + ": " + quote.toString());
+                float price = 0f;
+                float change = 0f;
+                float percentChange = 0f;
+                if (quote.getPrice() != null) {
+                    price = quote.getPrice().floatValue();
+                    change = quote.getChange().floatValue();
+                    percentChange = quote.getChangeInPercent().floatValue();
+                } else {
+                    invalidSymbol(context, symbol);
+                    continue;
+                }
                 String dailyHiLo;
                 if(quote.getDayHigh() != null) {
                     float dailyHigh = quote.getDayHigh().floatValue();
@@ -149,6 +165,12 @@ public final class QuoteSyncJob {
         }
     }
 
+    private static void invalidSymbol(Context context, String symbol) {
+        PrefUtils.removeStock(context, symbol);
+        removeStockFromDB(context, symbol);
+        invalidSymbolMessage(context, symbol);
+    }
+
     private static void invalidSymbolMessage(Context context, String symbol) {
         String message = context.getString(R.string.toast_invalid_stock_symbol, symbol);
         Timber.d(message);
@@ -158,8 +180,18 @@ public final class QuoteSyncJob {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    private static void noNetworkMessage(Context context) {
+        String message = context.getString(R.string.no_network_error_message);
+        Timber.d("noNetworkMessage: " + message);
+        Intent intent = new Intent(MainActivity.INVALID_STOCK_SYMBOL);
+        intent.putExtra(MainActivity.INVALID_STOCK_MESSAGE, message);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
     public static void removeStockFromDB(Context context, String symbol) {
         int i = context.getContentResolver().delete(Contract.Quote.makeUriForStock(symbol), null, null);
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+        context.sendBroadcast(dataUpdatedIntent);
         Timber.d(i + " rows deleted from DB");
 
     }
@@ -195,10 +227,13 @@ public final class QuoteSyncJob {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            Timber.d("network available...");
             Intent nowIntent = new Intent(context, QuoteIntentService.class);
             context.startService(nowIntent);
         } else {
-
+            Timber.d("network not available... sending message");
+            noNetworkMessage(context);
+            Timber.d("scheduling job");
             JobInfo.Builder builder = new JobInfo.Builder(ONE_OFF_ID, new ComponentName(context, QuoteJobService.class));
 
 

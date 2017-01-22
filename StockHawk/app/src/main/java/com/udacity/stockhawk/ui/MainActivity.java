@@ -65,9 +65,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra(INVALID_STOCK_MESSAGE);
+            Timber.d("LocalBroadcastReceiver message received: " + message);
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_network));
             error.setVisibility(View.VISIBLE);
+            updateEmptyView();
         } else if (!networkUp()) {
             Timber.d("No network, stocks 'available'");
             swipeRefreshLayout.setRefreshing(false);
@@ -200,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             }
             PrefUtils.addStock(this, symbol);
-            QuoteSyncJob.syncImmediately(this);
+            onRefresh();
+//            QuoteSyncJob.syncImmediately(this);
         }
     }
 
@@ -232,8 +236,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void updateEmptyView() {
+        TextView tv = (TextView) findViewById(R.id.error);
         if(adapter.getItemCount() == 0) {
-            TextView tv = (TextView) findViewById(R.id.error);
             int message = R.string.empty_stock_list_message;
             int problem = StockAdapter.getStatus(this);
             switch(problem) {
@@ -243,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 default:
             }
             tv.setText(message);
+        } else {
+            tv.setText("No network connection... This is the updateEmptyViewe method...");
         }
     }
 
