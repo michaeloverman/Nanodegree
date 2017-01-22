@@ -189,7 +189,8 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
 
         final Intent fillInIntent = new Intent();
         fillInIntent.putExtra(MainActivity.STOCK_SYMBOL_EXTRA, symbol);
-        views.setOnClickFillInIntent(R.layout.widget_list_item, fillInIntent);
+//        fillInIntent.se(MainActivity.STOCK_SYMBOL_EXTRA, symbol);
+        views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
         return views;
     }
 

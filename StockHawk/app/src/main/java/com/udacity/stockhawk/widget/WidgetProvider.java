@@ -45,9 +45,12 @@ public class WidgetProvider extends AppWidgetProvider {
                 setRemoteAdapterV11(context, views, appWidgetIds[i]);
             }
             Intent clickIntentTemplate =
-                    context.getResources().getBoolean(R.bool.use_detail_activity)
-                            ? new Intent(context, DetailActivity.class)
-                            : new Intent(context, MainActivity.class);
+//                    context.getResources().getBoolean(R.bool.use_detail_activity)
+//                            ? new Intent(context, DetailActivity.class)
+//                            : new Intent(context, MainActivity.class);
+                    new Intent(context, DetailActivity.class);
+            // change this back, once tablet layout worked out...
+
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -70,9 +73,6 @@ public class WidgetProvider extends AppWidgetProvider {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             int[] ids = manager.getAppWidgetIds(new ComponentName(context, getClass()));
             manager.notifyAppWidgetViewDataChanged(ids, R.id.widget_list);
-        } else if (true) {
-            Timber.d("WIDGET action UPDATE_OPTIONS");
-            context.startService(new Intent(context, WidgetRemoteViewsService.class));
         }
     }
 
@@ -81,8 +81,6 @@ public class WidgetProvider extends AppWidgetProvider {
         Timber.d("WIDGET OPTIONS CHANGED");
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-//        appWidgetManager.
-
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
