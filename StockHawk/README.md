@@ -1,11 +1,9 @@
 # Stock Hawk
-
-This is the starter code for project 3 in Udacity's [Android Developer Nanodegree](https://www.udacity.com/course/android-developer-nanodegree-by-google--nd801). 
-
-Check out Udacity's [Advanced Android App Development](https://www.udacity.com/course/advanced-android-app-development--ud855) course to get the skills you'll need to complete this project!
-
-If you're a Nanodegree student check your work againt the project [rubric](https://review.udacity.com/#!/rubrics/140/view), then click [here](https://classroom.udacity.com/nanodegrees/nd801/parts/8011345406/project) to submit your project.
-
-# Contrubuting
-
-Pull requests gratefully accepted.
+Starter code was provided for this project, which included some problems, and much room for improvement. The assignment was take the provided app, and clean it up, getting ready for production. Some of the issues which I addressed:
+	* created a 'details' page, which displayed more information about the stock, including graphing its value over time
+	* improved accessibility, in particular descriptions which allow screen readers to assist users with sight impairments
+	* improved error handling, so users understand any problems
+	* created a widget to display basic info on the home screen, and open the app when clicked
+	* found and executed numerous bugs which were crashing the program
+	* improved layouts for various screen sizes and orientations
+	* prepared for localization to include right-to-left layouts
