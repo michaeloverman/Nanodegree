@@ -45,10 +45,10 @@ public class WidgetProvider extends AppWidgetProvider {
                 setRemoteAdapterV11(context, views, appWidgetIds[i]);
             }
             Intent clickIntentTemplate =
-//                    context.getResources().getBoolean(R.bool.use_detail_activity)
-//                            ? new Intent(context, DetailActivity.class)
-//                            : new Intent(context, MainActivity.class);
-                    new Intent(context, DetailActivity.class);
+                    context.getResources().getBoolean(R.bool.use_detail_activity)
+                            ? new Intent(context, DetailActivity.class)
+                            : new Intent(context, MainActivity.class);
+//                    new Intent(context, DetailActivity.class);
             // change this back, once tablet layout worked out...
 
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)

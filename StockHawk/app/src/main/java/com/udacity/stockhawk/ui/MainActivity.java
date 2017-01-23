@@ -4,12 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -31,10 +29,6 @@ import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,17 +70,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
 
         Timber.d("onCreate()");
-        if(savedInstanceState != null) {
-            Timber.d("Nonnull savedInstanceState");
-            String[] stocks = savedInstanceState.getStringArray("stocks");
-            Timber.d(stocks + " retrieved from savedInstanceState");
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-            Set<String> set = new HashSet<>(Arrays.asList(stocks));
-            editor.putStringSet(PrefUtils.PREF_STOCKS_KEY, set);
-            editor.apply();
-        } else {
-            Timber.d("savedInstanceState was evidently null..");
-        }
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
