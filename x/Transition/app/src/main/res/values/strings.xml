@@ -1,0 +1,38 @@
+<resources>
+    <!-- Enter Your API Key -->
+    <string name="api_key">f7097986478ba5bd9b98f5167305fcbd</string>
+
+    <!-- String resources for the Application -->
+    <string name="app_name">Cinephilia</string>
+    <string name="action_settings">Settings</string>
+    <string name="refresh_button">Refresh</string>
+    <string name="sort_order">Sort</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_user_settings">UserSettings</string>
+    <string name="title_search_activity">Search</string>
+    <string name="userRatings">User Ratings</string>
+    <string name="voteCount">Votes</string>
+    <string name="releaseDate">Released</string>
+    <string-array name="pref_sort_keys">
+        <item>"Most Popular"</item>
+        <item>"Highest Rated"</item>
+        <item>"Show Favorites"</item>
+    </string-array>
+    <string-array name="pref_sort_values">
+        <item>"Most Popular"</item>
+        <item>"Highest Rated"</item>
+        <item>"Show Favorites"</item>
+    </string-array>
+    <string name="favorites">"Show Favorites"</string>
+    <string name="pref_sort_order">"Most Popular"</string>
+    <string name="full_image_desc">This is full screen image of the movie </string>
+    <string name="notOnline">Not Connected to the Internet</string>
+    <string name="empty">Check Your Internet Connection</string>
+    <string name="imageDescription">Placeholder for Image Content Description</string>
+
+    <string name="movie_credits">View Cast and Crew Details</string>
+    <string name="credits_title">Movie Cast</string>
+    <string name="no_trailers">No Trailers with Us Right Now!!</string>
+    <string name="no_reviews">No Reviews with Us Right Now!!</string>
+
+</resources>

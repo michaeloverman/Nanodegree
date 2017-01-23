@@ -8,12 +8,12 @@
             <target android:excludeId="@android:id/navigationBarBackground" />
         </targets>
     </fade>
-    <slide android:slideEdge="bottom">
+    <slide android:slideEdge="top">
         <targets>
             <target android:targetId="@id/detail_line_graph_layout" />
         </targets>
     </slide>
-    <slide android:slideEdge="top">
+    <slide android:slideEdge="bottom">
         <targets>
             <target android:targetId="@id/detail_data_layout" />
         </targets>

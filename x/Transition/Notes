@@ -1,0 +1,7 @@
+/** Added on 18th January, 2016**/
+
+Important Notes:
+
+a. Acitivty Lifecycle
+b. OnConfigurationChanged():- Handling the activity restart() onConfigurationChanged()
+    link: http://developer.android.com/guide/topics/resources/runtime-changes.html

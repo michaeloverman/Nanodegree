@@ -221,7 +221,7 @@ public final class QuoteSyncJob {
     }
 
     public static synchronized void syncImmediately(Context context) {
-        Timber.d("syncImmediately()");
+        Timber.d("in syncImmediately()");
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -232,7 +232,7 @@ public final class QuoteSyncJob {
         } else {
             Timber.d("network not available... sending message");
             noNetworkMessage(context);
-            Timber.d("scheduling job");
+
             JobInfo.Builder builder = new JobInfo.Builder(ONE_OFF_ID, new ComponentName(context, QuoteJobService.class));
 
 

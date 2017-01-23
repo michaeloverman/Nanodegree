@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String INVALID_STOCK_SYMBOL = "invalidstocksymbol";
     public static final String INVALID_STOCK_MESSAGE = "invalidstockmessage";
     public static final String STOCK_SYMBOL_EXTRA = "stocksymbolextra";
+    public static final int NO_NETWORK_NO_STOCKS = 1;
+    private static final int NO_STOCKS = 2;
+
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
     RecyclerView stockRecyclerView;
@@ -149,15 +152,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onRefresh() {
-        Timber.d("onRefresh() calling syncImmediately()");
-        QuoteSyncJob.syncImmediately(this);
+
+        Timber.d("onRefresh()");
 
         if (!networkUp() && adapter.getItemCount() == 0) {
             Timber.d("No network, nothing in adapter");
             swipeRefreshLayout.setRefreshing(false);
             error.setText(getString(R.string.error_no_network));
             error.setVisibility(View.VISIBLE);
-            updateEmptyView();
+            updateEmptyView(NO_NETWORK_NO_STOCKS);
         } else if (!networkUp()) {
             Timber.d("No network, stocks 'available'");
             swipeRefreshLayout.setRefreshing(false);
@@ -169,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             error.setVisibility(View.GONE);
         }
+        QuoteSyncJob.syncImmediately(this);
     }
 
     public void button(@SuppressWarnings("UnusedParameters") View view) {
@@ -207,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             error.setVisibility(View.GONE);
         } else {
             error.setVisibility(View.VISIBLE);
-            updateEmptyView();
+            updateEmptyView(NO_STOCKS);
         }
         adapter.setCursor(data);
     }
@@ -218,21 +222,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.setCursor(null);
     }
 
-    private void updateEmptyView() {
+    private void updateEmptyView(int status) {
+        Timber.d("updateEmptyView()...");
         TextView tv = (TextView) findViewById(R.id.error);
-        if(adapter.getItemCount() == 0) {
-            int message = R.string.empty_stock_list_message;
-            int problem = StockAdapter.getStatus(this);
-            switch(problem) {
-                case StockAdapter.NO_STOCKS_IN_LIST:
-                    message = R.string.error_no_stocks;
-                    break;
-                default:
-            }
-            tv.setText(message);
-        } else {
-            tv.setText("No network connection... This is the updateEmptyViewe method...");
+        int message = R.string.empty_stock_list_message;
+//        if(adapter.getItemCount() == 0) {
+//            Timber.d("adapter.getItemCount() == 0");
+//            int problem = StockAdapter.getStatus(this);
+        if(status == NO_STOCKS && !networkUp())
+            status = NO_NETWORK_NO_STOCKS;
+
+        switch(status) {
+            case NO_NETWORK_NO_STOCKS:
+                Timber.d("NO_NETWORK_NO_STOCKS");
+                message = R.string.error_no_network;
+                break;
+            case NO_STOCKS:
+                Timber.d("NO_STOCKS");
+                message = R.string.error_no_stocks;
+                break;
+            default:
         }
+        tv.setText(message);
+
     }
 
 
@@ -240,8 +252,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (PrefUtils.getDisplayMode(this)
                 .equals(getString(R.string.pref_display_mode_absolute_key))) {
             item.setIcon(R.drawable.ic_percentage);
+            item.setTitle("Click to show change in percent");
         } else {
             item.setIcon(R.drawable.ic_dollar);
+            item.setTitle("Click to show change in absolute dollars");
         }
     }
 

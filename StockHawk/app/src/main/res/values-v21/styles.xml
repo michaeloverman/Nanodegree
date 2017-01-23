@@ -7,6 +7,5 @@
     <style name="AppTheme.Details" parent="@style/AppTheme">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/details_enter</item>
-        <item name="android:windowExitTransition">@transition/details_exit</item>
     </style>
 </resources>

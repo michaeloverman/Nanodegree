@@ -59,7 +59,6 @@ public class DetailActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_detail);
 
-//        mCompanyName = (TextView) findViewById(R.id.detail_company_name);
         mGraph = (LineChart) findViewById(R.id.detail_line_graph);
         mCurrentValueView = (TextView) findViewById(R.id.detail_current_value);
         mDailyHiLoView = (TextView) findViewById(R.id.detail_daily_hilo_value);
@@ -67,29 +66,24 @@ public class DetailActivity extends AppCompatActivity
 
         Intent intent = this.getIntent();
         mStockSymbol = intent.getStringExtra(MainActivity.STOCK_SYMBOL_EXTRA);
-        Timber.d("Current stock symbol: " + mStockSymbol);
-
         dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
 
-        Timber.d("calling loaderManager()");
         getSupportLoaderManager().initLoader(DETAIL_LOADER, null, this);
-
 
         this.supportStartPostponedEnterTransition();
     }
 
     private void getAllTheDetails(Cursor data) {
-        Timber.d("gettin' the details..");
         data.moveToFirst();
         String name = data.getString(Contract.Quote.POSITION_COMPANY_NAME);
         setTitle(name);
+        getSupportActionBar().setHomeActionContentDescription(R.string.up_button_content_description);
         mCurrentValue = data.getFloat(Contract.Quote.POSITION_PRICE);
         mCurrentValueView.setText(dollarFormat.format(mCurrentValue));
         mDailyHiLoView.setText(data.getString(Contract.Quote.POSITION_DAILY_HILO));
         mAnnualHiLoView.setText(data.getString(Contract.Quote.POSITION_ANNUAL_HILO));
 
         mStockHistoryString = data.getString(Contract.Quote.POSITION_HISTORY);
-//        mCompanyName.setText(name);
 
         List<Entry> entries = parseDataString(mStockHistoryString);
         LineDataSet dataSet = new LineDataSet(entries, "Stock Price");
@@ -100,6 +94,7 @@ public class DetailActivity extends AppCompatActivity
         DollarAxisFormatter dollarFormatter = new DollarAxisFormatter();
         mGraph.getAxisLeft().setDrawLabels(false);
         mGraph.getAxisRight().setValueFormatter(dollarFormatter);
+        mGraph.getLegend().setEnabled(false);
 
         mGraph.setData(lineData);
 

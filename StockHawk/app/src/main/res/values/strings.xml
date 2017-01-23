@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Stock Hawk</string>
+    <string name="title_widget">Stock Hawk Widget</string>
 
     <!--Key strings used for storing data-->
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
@@ -23,15 +24,19 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_add">Add</string>
 
+    <string name="fab_content_description">Add a new stock.</string>
+
     <!--Error messages-->
     <string name="error_no_network">No network connectivity! Will load current data when the network is available.</string>
+    <string name="no_network_error_message">No network connection. Data is not current. Will update when network reestablished.</string>
     <string name="error_no_stocks">No stocks added! Hit the floating action button to add one.</string>
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
     <string name="toast_invalid_stock_symbol">%s is not a valid stock symbol. Please try again...</string>
-    <string name="empty_stock_list_message">No Stock Information Available</string>
+    <string name="no_info_to_show">There is no current stock data to display.</string>
+    <string name="empty_stock_list_message">No Stock Data Available</string>
 
-    <!--Detail view labels, etc-->
+    <!--Detail view labels and string formats-->
     <string name="hi_lo_slash_string" translatable="false">%1$s / %2$s</string>
     <string name="current_value_label">Current Value:</string>
     <string name="daily_high_low_label">Daily High/Low:</string>
@@ -40,8 +45,6 @@
 
     <!--Activity transition key-->
     <string name="trans_price_view_name" translatable="false">Trans_Price_View</string>
-    <string name="no_network_error_message">No network connection. Data is not current. Will update when network reestablished.</string>
-    <string name="title_widget">Stock Hawk Widget</string>
-    <string name="no_info_to_show">There is no current stock data to display.</string>
+    <string name="up_button_content_description">Navigate back to full stock list.</string>
 
 </resources>

@@ -371,6 +371,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             Context context = getContext();
             context.startService(new Intent(ACTION_DATA_UPDATED)
                 .setClass(context, WeatherMuzeiSource.class));
+            
         }
     }
     private void notifyWeather() {
