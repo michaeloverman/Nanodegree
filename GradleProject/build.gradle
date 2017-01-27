@@ -12,10 +12,40 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
 }
 
 allprojects {
     repositories {
         jcenter()
     }
+}
+
+
+task openGce(dependsOn: ":backend:appengineRun") {
+    evaluationDependsOn(":backend")
+
+    project(":backend") {
+        appengine {
+            daemon = true
+        }
+    }
+
+}
+
+task testAsync(dependsOn: ":app:connectedAndroidTest") {
+    finalizedBy 'closeGce'
+
+}
+
+task closeGce {
+    finalizedBy ":backend:appengineStop"
+
+    doLast {
+        println "closing the GCE"
+    }
+}
+
+task testBackend(dependsOn: "openGce") {
+    finalizedBy testAsync
 }
