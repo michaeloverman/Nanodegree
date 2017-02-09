@@ -1,0 +1,4 @@
+#Wed Feb 01 12:36:42 EST 2017
+base.0=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_8
+renamed.0=classes.dex
+file.0=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\5\\slice_8\\classes.dex

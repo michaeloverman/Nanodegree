@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\9a948918e621ee719655c365f88c65192db874b1\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4778531b579870649fe40cda0f64a15030ce38a8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\7bf8a14a4d0177c098478ea1c2e39724b526cf10\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_ed920ae28bcae745b3fc16c63b7e049b148d0b78\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="M:\Nanodegree\XYZ\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4129ed6ae50bce103ac538babc96115adec37529">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_6cf284abacb54fa89d0582ecd5bfcc5715d6fefa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\21ce8a3864e20e19170f964dbe4367a6f9367ae2\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="aee64634871d88a419d59eb743c1258a60f19700">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7dd33254f3d5ce2c83e40065bd1c3fcd22719a7b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\be5ce6ca9ef5e537a8f82af4d7ec782121dd7510\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="30103d98fa5ed824b54af839c85e2111f9bde8ec">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6ff70087b0c8e86444ad1fa4b4b0985cba196472\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\beacff4185268d7ffcd867a4ac69bc578a35ea31\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_b277ed06d3316950ff7b803569f3c177a5d832ad\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\309fbb3f5b3eec36178827a58460adb7f77565c4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7f2420506110902f033406b25697cf97ee8c38b2">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_e7e24ac51d365d2022254417089da72a056b2f27\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\68f92884e0ca4f2ce84c51e7bcf8ae89612af950\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1b7784e3df3f459f49e13958cb35f172dc22fc23\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\0b25f804b10a8f2a8035d2799d35e744b5a342f8\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_3e335f5b9eace5043a02dc84b9276660da6a6b89\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\ac7c9e81726a171e31b457f47bc2c0906b64fe94\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1ae303a7d488fa21d42258014d8f232ae06b7ee4\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\4e83b3d8758bf13725590ade1f0b41901b0a5282\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e006c9b6f0aaed9d8c7934b74039738390fe3468">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_8761064ee2be8519e640744bd79f22f880a2accb\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="M:\Nanodegree\XYZ\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="53cb4a17c5d4c95f850e380ef5abdec49b36d8d5">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_924e4b81b97866dd93927aafb8827c7e8bde27b2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\c966d3351b17302df4a291449e308a8957449204\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6f68018b5ddc2493f5e5cecc5601c05d0539281a">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_ffa798c73298e6fc372ebfa346139dee8d4526a3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\6b3ddf57a494f12f145b4f0659f6af344d5bac2a\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_a74e4367502f567e90a6a39b5f4dee5cd499e638\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\4085ece4c86c235651c028cb48b1f5b19f1aa829\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_18e43c08993a9fe673083dc88dcd1592e85f7206\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\5a6338c7d542f9ff23f238bf670900dd4eaa4b08\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d38084015027549951cbaea5d5f6fb795cc81151">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1851276a3b7dc4809e02bcd895024d3c31914240\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Michael\.android\build-cache\6a3abaea4c8e3e8c494a29bfa359e687c91d8fc2\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\10\classes_31705048d3c068b8e25bf5881c58ebf3e7720a55\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="M:\Nanodegree\XYZ\libs\volley.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c68094cbd011a3f9dccbfe16e77a2cf43622e277">
+        <dex dex="M:\Nanodegree\XYZ\build\intermediates\transforms\dex\debug\folders\1000\2\volley_57db4d5eb778d92b0c642b61fef14ff236e5dc23\classes.dex" />
+    </item>
+
+</items>
