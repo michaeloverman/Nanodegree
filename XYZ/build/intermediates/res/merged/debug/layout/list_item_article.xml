@@ -32,7 +32,7 @@
             android:paddingTop="@dimen/card_title_padding"
             android:paddingRight="@dimen/card_title_padding"
             android:paddingBottom="4dp"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/white_text"
             android:ellipsize="end"
             android:maxLines="@integer/card_view_max_lines" />
 
@@ -44,7 +44,7 @@
             android:paddingLeft="@dimen/card_title_padding"
             android:paddingRight="@dimen/card_title_padding"
             android:paddingBottom="@dimen/card_title_padding"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/white_text"
             android:maxLines="1"
             android:singleLine="true"
             android:ellipsize="end" />

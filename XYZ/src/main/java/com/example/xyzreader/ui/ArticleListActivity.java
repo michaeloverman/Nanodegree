@@ -118,13 +118,8 @@ public class ArticleListActivity extends ActionBarActivity implements
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, "refreshing layout changing from " + mIsRefreshing + " to " + !mIsRefreshing);
-        if(!mIsRefreshing) {
-            mIsRefreshing = true;
-        } else {
-            mIsRefreshing = false;
-        }
-        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+
+        startService(new Intent(this, UpdaterService.class));
     }
 
 

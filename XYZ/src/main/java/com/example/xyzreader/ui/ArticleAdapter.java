@@ -2,8 +2,10 @@ package com.example.xyzreader.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
@@ -56,8 +60,11 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
     }
 
     @Override
-    public void onBindViewHolder(ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(final ArticleViewHolder holder, int position) {
         mCursor.moveToPosition(position);
+
+        ViewCompat.setTransitionName(holder.thumbnailView, "imageView" + position);
+
         holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
         holder.subtitleView.setText(
                 DateUtils.getRelativeTimeSpanString(
@@ -66,11 +73,28 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
                         DateUtils.FORMAT_ABBREV_ALL).toString()
                         + " by "
                         + mCursor.getString(ArticleLoader.Query.AUTHOR));
-        holder.thumbnailView.setImageUrl(
-                mCursor.getString(ArticleLoader.Query.THUMB_URL),
-                ImageLoaderHelper.getInstance(mContext).getImageLoader());
         holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-        ViewCompat.setTransitionName(holder.thumbnailView, "imageView" + position);
+
+        ImageLoader loader = ImageLoaderHelper.getInstance(mContext).getImageLoader();
+        String imageString = mCursor.getString(ArticleLoader.Query.THUMB_URL);
+        holder.thumbnailView.setImageUrl(imageString, loader);
+        loader.get(imageString, new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                Bitmap bitmap = imageContainer.getBitmap();
+                if (bitmap != null) {
+                    Palette p = Palette.generate(bitmap, 12);
+                    int mutedColor = p.getDarkMutedColor(0xFF333333);
+                    holder.itemView.setBackgroundColor(mutedColor);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+
     }
 
     @Override
