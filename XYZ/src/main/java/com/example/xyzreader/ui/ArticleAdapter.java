@@ -41,7 +41,7 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
     }
 
     interface ArticleClickHandler {
-        void onClick(Uri uri, View view);
+        void onClick(Uri uri, View view, int position);
     }
 
     @Override
@@ -53,7 +53,8 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
             public void onClick(View view) {
                 mClickHandler.onClick(ItemsContract.Items.buildItemUri(
                         getItemId(vh.getAdapterPosition())),
-                        vh.thumbnailView);
+                        vh.thumbnailView,
+                        vh.getAdapterPosition());
             }
         });
         return vh;
@@ -78,6 +79,8 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
         ImageLoader loader = ImageLoaderHelper.getInstance(mContext).getImageLoader();
         String imageString = mCursor.getString(ArticleLoader.Query.THUMB_URL);
         holder.thumbnailView.setImageUrl(imageString, loader);
+//        Picasso.with(mContext).load(imageString).into(holder.thumbnailView);
+
         loader.get(imageString, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {

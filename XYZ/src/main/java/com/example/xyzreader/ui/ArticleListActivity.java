@@ -1,16 +1,16 @@
 package com.example.xyzreader.ui;
 
-import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
@@ -53,7 +53,7 @@ public class ArticleListActivity extends ActionBarActivity implements
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        getLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
             refresh();
@@ -102,6 +102,7 @@ public class ArticleListActivity extends ActionBarActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished()");
         ArticleAdapter adapter = new ArticleAdapter(cursor, this, this);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
@@ -124,12 +125,16 @@ public class ArticleListActivity extends ActionBarActivity implements
 
 
     @Override
-    public void onClick(Uri uri, View view) {
+    public void onClick(Uri uri, View view, int position) {
         Log.d(TAG, "onClick() heading to detailActivity");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(ArticleListActivity.this,
-                        new Pair<View, String>(view, getString(R.string.transition_image_view)));
+                        view, getString(R.string.transition_image_view) + position);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setReenterTransition(new android.transition.Fade());
+        }
         startActivity(intent, activityOptions.toBundle());
+//        startActivity(intent);
     }
 }

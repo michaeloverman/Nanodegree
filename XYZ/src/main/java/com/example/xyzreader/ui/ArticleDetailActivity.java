@@ -1,15 +1,17 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,9 +22,10 @@ import com.example.xyzreader.data.ItemsContract;
 /**
  * An activity representing a single Article detail screen, letting you swipe between articles.
  */
-public class ArticleDetailActivity extends ActionBarActivity
+public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String TAG = ArticleDetailActivity.class.getSimpleName();
     private Cursor mCursor;
     private long mStartId;
 
@@ -39,24 +42,28 @@ public class ArticleDetailActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "onCreate()");
+
         setContentView(R.layout.activity_article_detail);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            Log.d(TAG, "postponing EnterTransition...");
             postponeEnterTransition();
         }
 
-        getLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(0, null, this);
 
-        mPagerAdapter = new MyPagerAdapter(getFragmentManager());
+        mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
 //        mPager.setPageMargin((int) TypedValue
 //                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
 //        mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
+        Log.d(TAG, "about to addOnPageChangeListener()");
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 //            @Override
 //            public void onPageScrollStateChanged(int state) {
@@ -98,7 +105,7 @@ public class ArticleDetailActivity extends ActionBarActivity
 //                }
 //            });
 //        }
-
+        Log.d(TAG, "about to get data from savedInstanceState");
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
@@ -106,16 +113,21 @@ public class ArticleDetailActivity extends ActionBarActivity
             }
         }
 
-        this.supportStartPostponedEnterTransition();
+//        this.supportStartPostponedEnterTransition();
+        Log.d(TAG, "onCreate() completed");
     }
+
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        Log.d(TAG, "onCreateLoader()");
         return ArticleLoader.newAllArticlesInstance(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished()");
         mCursor = cursor;
 
         // Select the start ID
@@ -125,7 +137,7 @@ public class ArticleDetailActivity extends ActionBarActivity
             while (!mCursor.isAfterLast()) {
                 if (mCursor.getLong(ArticleLoader.Query._ID) == mStartId) {
                     final int position = mCursor.getPosition();
-        mPagerAdapter.notifyDataSetChanged();
+                    mPagerAdapter.notifyDataSetChanged();
                     mPager.setCurrentItem(position, false);
                     break;
                 }
@@ -133,15 +145,29 @@ public class ArticleDetailActivity extends ActionBarActivity
             }
             mStartId = 0;
         }
+
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+        Log.d(TAG, "onLoaderReset()");
         mCursor = null;
         mPagerAdapter.notifyDataSetChanged();
     }
 
-//    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed()");
+        overridePendingTransition(R.transition.article_detail_return_transition,
+                R.transition.article_detail_enter_transition);
+//        TransitionInflater inflater = TransitionInflater.from(this);
+//        android.transition.Transition transition = inflater.inflateTransition(
+//                R.transition.article_detail_return_transition);
+//        TransitionManager.go(R.layout.activity_article_list, transition);
+    }
+
+    //    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
 //        if (itemId == mSelectedItemId) {
 //            mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
 //            updateUpButtonPosition();
@@ -156,22 +182,33 @@ public class ArticleDetailActivity extends ActionBarActivity
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
+            Log.d(TAG, "MyPagerAdapter created");
         }
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
-            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
+            Log.d(TAG, "MyPagerAdapter setPrimaryItem()");
+//            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
 //            if (fragment != null) {
 //                mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
 ////                updateUpButtonPosition();
 //            }
+
         }
 
         @Override
         public Fragment getItem(int position) {
+            Log.d(TAG, "MyPagerAdapter getItem()");
             mCursor.moveToPosition(position);
-            return ArticleDetailFragment.newInstance(mCursor.getLong(ArticleLoader.Query._ID));
+            Fragment fragment = ArticleDetailFragment.newInstance(
+                    mCursor.getLong(ArticleLoader.Query._ID), position);
+            fragment.setSharedElementReturnTransition(null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                fragment.setReturnTransition(TransitionInflater.from(ArticleDetailActivity.this)
+                        .inflateTransition(R.transition.article_detail_return_transition));
+            }
+            return fragment;
         }
 
         @Override

@@ -1,28 +1,29 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
+import com.squareup.picasso.Picasso;
 
 /**
  * A fragment representing a single Article detail screen. This fragment is
@@ -34,10 +35,12 @@ public class ArticleDetailFragment extends Fragment implements
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_POS = "item_pos";
 //    private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
     private long mItemId;
+    private int mItemPosition;
     private View mRootView;
 //    private int mMutedColor;
 //    private CoordinatorLayout mScrollView;
@@ -56,11 +59,14 @@ public class ArticleDetailFragment extends Fragment implements
      * fragment (e.g. upon screen orientation changes).
      */
     public ArticleDetailFragment() {
+        Log.d(TAG, "ArticleDetailFragment() constructed");
     }
 
-    public static ArticleDetailFragment newInstance(long itemId) {
+    public static ArticleDetailFragment newInstance(long itemId, int position) {
+        Log.d(TAG, "newInstance()");
         Bundle arguments = new Bundle();
         arguments.putLong(ARG_ITEM_ID, itemId);
+        arguments.putInt(ARG_ITEM_POS, position);
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
@@ -69,15 +75,23 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate()");
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
+            mItemPosition = getArguments().getInt(ARG_ITEM_POS);
         }
 
         mIsCard = getResources().getBoolean(R.bool.detail_is_card);
 //        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
 //                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.d(TAG, "setting Exit Transition...");
+            this.setReturnTransition(TransitionInflater.from(getContext())
+                    .inflateTransition(R.transition.article_detail_return_transition));
+        }
 
 //        mMutedColor = getResources().getColor(R.color.primary_dark);
     }
@@ -89,7 +103,7 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.d(TAG, "onActivityCreated()");
         // In support library r8, calling initLoader for a fragment in a FragmentPagerAdapter in
         // the fragment's onCreate may cause the same LoaderManager to be dealt to multiple
         // fragments because their mIndex is -1 (haven't been added to the activity yet). Thus,
@@ -100,6 +114,7 @@ public class ArticleDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView()");
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 //        mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
 //                mRootView.findViewById(R.id.draw_insets_frame_layout);
@@ -130,6 +145,12 @@ public class ArticleDetailFragment extends Fragment implements
 
         bindViews();
 //        updateStatusBar();
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPhotoView.setTransitionName(getString(R.string.transition_image_view) + mItemPosition);
+        }
+
         return mRootView;
     }
 
@@ -163,6 +184,7 @@ public class ArticleDetailFragment extends Fragment implements
 //    }
 
     private void bindViews() {
+        Log.d(TAG, "bindViews()");
         if (mRootView == null) {
             return;
         }
@@ -202,27 +224,46 @@ public class ArticleDetailFragment extends Fragment implements
                 }
             });
 
+            Picasso.with(getActivity()).load(
+                    mCursor.getString(ArticleLoader.Query.PHOTO_URL))
+                    .into(mPhotoView);
 
-            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
-                        @Override
-                        public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-                            Bitmap bitmap = imageContainer.getBitmap();
-                            if (bitmap != null) {
-//                                Palette p = Palette.generate(bitmap, 12);
-//                                mMutedColor = p.getDarkMutedColor(0xFF333333);
-                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-//                                mRootView.findViewById(R.id.meta_bar)
-//                                        .setBackgroundColor(mMutedColor);
-//                                updateStatusBar();
-                            }
-                        }
+            mPhotoView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    Log.d(TAG, "mPhotoView TreeObserver onPreDraw()");
+                    mPhotoView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getActivity().startPostponedEnterTransition();
+                    }
+                    return true;
+                }
+            });
 
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
+//            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
+//                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
+//                        @Override
+//                        public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+//                            Log.d(TAG, "ImageLoader onResponse()");
+//                            Bitmap bitmap = imageContainer.getBitmap();
+//                            if (bitmap != null) {
+////                                Palette p = Palette.generate(bitmap, 12);
+////                                mMutedColor = p.getDarkMutedColor(0xFF333333);
+//                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
+////                                mRootView.findViewById(R.id.meta_bar)
+////                                        .setBackgroundColor(mMutedColor);
+////                                updateStatusBar();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//
+//                        }
+//                    });
 
-                        }
-                    });
+
+
         } else {
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
@@ -233,11 +274,13 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        Log.d(TAG, "onCreatedLoader()");
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        Log.d(TAG, "onLoadFinished()");
         if (!isAdded()) {
             if (cursor != null) {
                 cursor.close();
@@ -257,6 +300,7 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        Log.d(TAG, "onLoaderReset()");
         mCursor = null;
         bindViews();
     }

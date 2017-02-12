@@ -6,12 +6,15 @@
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
         <item name="android:colorAccent">@color/accent</item>
 
-        <item name="android:windowExitTransition">
-            @transition/list_exit
-        </item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowExitTransition">@transition/list_exit</item>
+        <item name="android:windowReenterTransition">@transition/list_reenter</item>
     </style>
 
-    <style name="Theme.Bacon.Detail">
+    <style name="Theme.Bacon.Detail" parent="Theme.Bacon">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/article_detail_enter_transition</item>
+        <item name="android:windowReturnTransition">@transition/article_detail_return_transition</item>
     </style>
 </resources>
