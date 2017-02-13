@@ -22,7 +22,9 @@
             android:paddingLeft="@dimen/list_side_margin"
             android:paddingRight="@dimen/list_side_margin"
             android:paddingBottom="28dp"
-            android:background="@color/primary_light"/>
+            android:background="@color/primary_light"
+            android:transitionGroup="false"
+            />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout

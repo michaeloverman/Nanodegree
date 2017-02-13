@@ -48,6 +48,7 @@
             android:elevation="8dp"
             android:fitsSystemWindows="true"
             android:minHeight="?attr/actionBarSize"
+            android:id="@+id/article_top_half"
             >
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -62,7 +63,6 @@
                 <!--suppress AndroidLintContentDescription -->
 
                 <FrameLayout
-            android:id="@+id/article_top_half"
             android:transitionGroup="true"
                     android:layout_width="match_parent"
                     app:layout_collapseMode="parallax"

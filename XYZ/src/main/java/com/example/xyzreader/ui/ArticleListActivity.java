@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
@@ -131,9 +130,9 @@ public class ArticleListActivity extends ActionBarActivity implements
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(ArticleListActivity.this,
                         view, getString(R.string.transition_image_view) + position);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setReenterTransition(new android.transition.Fade());
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setReenterTransition(new android.transition.Fade());
+//        }
         startActivity(intent, activityOptions.toBundle());
 //        startActivity(intent);
     }

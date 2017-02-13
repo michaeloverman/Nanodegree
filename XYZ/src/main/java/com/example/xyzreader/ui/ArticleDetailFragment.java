@@ -12,7 +12,6 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,11 +86,11 @@ public class ArticleDetailFragment extends Fragment implements
 //                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Log.d(TAG, "setting Exit Transition...");
-            this.setReturnTransition(TransitionInflater.from(getContext())
-                    .inflateTransition(R.transition.article_detail_return_transition));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Log.d(TAG, "setting Exit Transition...");
+//            this.setReturnTransition(TransitionInflater.from(getContext())
+//                    .inflateTransition(R.transition.article_detail_return_transition));
+//        }
 
 //        mMutedColor = getResources().getColor(R.color.primary_dark);
     }

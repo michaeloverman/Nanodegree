@@ -7,14 +7,17 @@
         <item name="android:colorAccent">@color/accent</item>
 
         <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowExitTransition">@transition/list_exit</item>
-        <item name="android:windowReenterTransition">@transition/list_reenter</item>
+        <item name="android:windowExitTransition">@android:transition/explode</item>
+        <item name="android:windowReenterTransition">@android:transition/fade</item>
+
     </style>
 
     <style name="Theme.Bacon.Detail" parent="Theme.Bacon">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowEnterTransition">@transition/article_detail_enter_transition</item>
+        <!--<item name="android:windowEnterTransition">@transition/article_detail_enter_transition</item>-->
         <item name="android:windowReturnTransition">@transition/article_detail_return_transition</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <!--<item name="android:windowReturnTransition">@android:transition/slide_bottom</item>-->
     </style>
 </resources>

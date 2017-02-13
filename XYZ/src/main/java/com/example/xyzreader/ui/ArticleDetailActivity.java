@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,17 +154,17 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Log.d(TAG, "onBackPressed()");
-        overridePendingTransition(R.transition.article_detail_return_transition,
-                R.transition.article_detail_enter_transition);
-//        TransitionInflater inflater = TransitionInflater.from(this);
-//        android.transition.Transition transition = inflater.inflateTransition(
-//                R.transition.article_detail_return_transition);
-//        TransitionManager.go(R.layout.activity_article_list, transition);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Log.d(TAG, "onBackPressed()");
+//        overridePendingTransition(R.transition.article_detail_return_transition,
+//                R.transition.article_detail_enter_transition);
+////        TransitionInflater inflater = TransitionInflater.from(this);
+////        android.transition.Transition transition = inflater.inflateTransition(
+////                R.transition.article_detail_return_transition);
+////        TransitionManager.go(R.layout.activity_article_list, transition);
+//    }
 
     //    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
 //        if (itemId == mSelectedItemId) {
@@ -203,11 +202,11 @@ public class ArticleDetailActivity extends AppCompatActivity
             mCursor.moveToPosition(position);
             Fragment fragment = ArticleDetailFragment.newInstance(
                     mCursor.getLong(ArticleLoader.Query._ID), position);
-            fragment.setSharedElementReturnTransition(null);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                fragment.setReturnTransition(TransitionInflater.from(ArticleDetailActivity.this)
-                        .inflateTransition(R.transition.article_detail_return_transition));
-            }
+//            fragment.setSharedElementReturnTransition(null);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                fragment.setReturnTransition(TransitionInflater.from(ArticleDetailActivity.this)
+//                        .inflateTransition(R.transition.article_detail_return_transition));
+//            }
             return fragment;
         }
 
