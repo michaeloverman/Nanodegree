@@ -115,36 +115,11 @@ public class ArticleDetailFragment extends Fragment implements
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-//        mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
-//                mRootView.findViewById(R.id.draw_insets_frame_layout);
-//        mDrawInsetsFrameLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
-//            @Override
-//            public void onInsetsChanged(Rect insets) {
-//                mTopInset = insets.top;
-//            }
-//        });
-
-//        mScrollView = (CoordinatorLayout) mRootView.findViewById(R.id.scrollview);
-//        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
-//            @Override
-//            public void onScrollChanged() {
-//                mScrollY = mScrollView.getScrollY();
-////                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-//                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
-//                updateStatusBar();
-//            }
-//        });
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
         mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
-//        mStatusBarColorDrawable = new ColorDrawable(0);
-
-
-
         bindViews();
-//        updateStatusBar();
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPhotoView.setTransitionName(getString(R.string.transition_image_view) + mItemPosition);
@@ -153,34 +128,6 @@ public class ArticleDetailFragment extends Fragment implements
         return mRootView;
     }
 
-//    private void updateStatusBar() {
-//        int color = 0;
-//        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
-//            float f = progress(mScrollY,
-//                    mStatusBarFullOpacityBottom - mTopInset * 3,
-//                    mStatusBarFullOpacityBottom - mTopInset);
-//            color = Color.argb((int) (255 * f),
-//                    (int) (Color.red(mMutedColor) * 0.9),
-//                    (int) (Color.green(mMutedColor) * 0.9),
-//                    (int) (Color.blue(mMutedColor) * 0.9));
-//        }
-//        mStatusBarColorDrawable.setColor(color);
-//        mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
-//    }
-//
-//    static float progress(float v, float min, float max) {
-//        return constrain((v - min) / (max - min), 0, 1);
-//    }
-//
-//    static float constrain(float val, float min, float max) {
-//        if (val < min) {
-//            return min;
-//        } else if (val > max) {
-//            return max;
-//        } else {
-//            return val;
-//        }
-//    }
 
     private void bindViews() {
         Log.d(TAG, "bindViews()");
@@ -234,34 +181,11 @@ public class ArticleDetailFragment extends Fragment implements
                     mPhotoView.getViewTreeObserver().removeOnPreDrawListener(this);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getActivity().startPostponedEnterTransition();
+                        mPhotoView.setTransitionName(getString(R.string.different_transition_name));
                     }
                     return true;
                 }
             });
-
-//            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-//                    .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
-//                        @Override
-//                        public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-//                            Log.d(TAG, "ImageLoader onResponse()");
-//                            Bitmap bitmap = imageContainer.getBitmap();
-//                            if (bitmap != null) {
-////                                Palette p = Palette.generate(bitmap, 12);
-////                                mMutedColor = p.getDarkMutedColor(0xFF333333);
-//                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-////                                mRootView.findViewById(R.id.meta_bar)
-////                                        .setBackgroundColor(mMutedColor);
-////                                updateStatusBar();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//
-//                        }
-//                    });
-
-
 
         } else {
             mRootView.setVisibility(View.GONE);
@@ -304,14 +228,5 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
-//    public int getUpButtonFloor() {
-//        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-//            return Integer.MAX_VALUE;
-//        }
-//
-//        // account for parallax
-//        return mIsCard
-//                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-//                : mPhotoView.getHeight() - mScrollY;
-//    }
+
 }

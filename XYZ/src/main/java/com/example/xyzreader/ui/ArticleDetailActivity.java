@@ -3,16 +3,12 @@ package com.example.xyzreader.ui;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
@@ -25,6 +21,8 @@ public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleDetailActivity.class.getSimpleName();
+    private static final String START_ID = "article_id";
+    private static final String SELECTED_ID = "selected_article_id";
     private Cursor mCursor;
     private long mStartId;
 
@@ -111,12 +109,42 @@ public class ArticleDetailActivity extends AppCompatActivity
                 mSelectedItemId = mStartId;
             }
         }
+        else {
+            mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
+//            // do stuff here to retrieve the selected Item, I think
+//            mStartId = savedInstanceState.getLong(START_ID);
+//            mSelectedItemId = mStartId;
+        }
 
 //        this.supportStartPostponedEnterTransition();
         Log.d(TAG, "onCreate() completed");
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() ");
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() ");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        Log.d(TAG, "onSaveInstanceState()");
+//        outState.putLong(START_ID, mStartId);
+//        outState.putLong(SELECTED_ID, mSelectedItemId);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -128,6 +156,8 @@ public class ArticleDetailActivity extends AppCompatActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.d(TAG, "onLoadFinished()");
         mCursor = cursor;
+        mPagerAdapter.setCursor(mCursor);
+        mPagerAdapter.notifyDataSetChanged();
 
         // Select the start ID
         if (mStartId > 0) {
@@ -178,41 +208,5 @@ public class ArticleDetailActivity extends AppCompatActivity
 //        mUpButton.setTranslationY(Math.min(mSelectedItemUpButtonFloor - upButtonNormalBottom, 0));
 //    }
 
-    private class MyPagerAdapter extends FragmentStatePagerAdapter {
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-            Log.d(TAG, "MyPagerAdapter created");
-        }
 
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            Log.d(TAG, "MyPagerAdapter setPrimaryItem()");
-//            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-//            if (fragment != null) {
-//                mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
-////                updateUpButtonPosition();
-//            }
-
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Log.d(TAG, "MyPagerAdapter getItem()");
-            mCursor.moveToPosition(position);
-            Fragment fragment = ArticleDetailFragment.newInstance(
-                    mCursor.getLong(ArticleLoader.Query._ID), position);
-//            fragment.setSharedElementReturnTransition(null);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                fragment.setReturnTransition(TransitionInflater.from(ArticleDetailActivity.this)
-//                        .inflateTransition(R.transition.article_detail_return_transition));
-//            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return (mCursor != null) ? mCursor.getCount() : 0;
-        }
-    }
 }

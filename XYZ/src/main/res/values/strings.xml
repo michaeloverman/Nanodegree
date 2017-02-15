@@ -9,5 +9,6 @@
 
     <string name="up">Up</string>
     <string name="transition_image_view">transition_image_view</string>
+    <string name="different_transition_name">bunk_string_to_eliminate_return_shared_element_transition</string>
 
 </resources>

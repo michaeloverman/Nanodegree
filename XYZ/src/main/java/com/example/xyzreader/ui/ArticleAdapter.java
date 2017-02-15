@@ -8,6 +8,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.example.xyzreader.data.ItemsContract;
  */
 
 class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
+    private static final String TAG = ArticleAdapter.class.getSimpleName();
+
     private Cursor mCursor;
     private ArticleClickHandler mClickHandler;
     private Context mContext;
@@ -102,6 +105,7 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount()");
         return mCursor.getCount();
     }
 
