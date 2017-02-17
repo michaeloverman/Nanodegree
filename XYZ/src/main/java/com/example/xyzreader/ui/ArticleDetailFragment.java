@@ -35,23 +35,13 @@ public class ArticleDetailFragment extends Fragment implements
 
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_POS = "item_pos";
-//    private static final float PARALLAX_FACTOR = 1.25f;
 
     private Cursor mCursor;
     private long mItemId;
     private int mItemPosition;
     private View mRootView;
-//    private int mMutedColor;
-//    private CoordinatorLayout mScrollView;
-//    private DrawInsetsFrameLayout mDrawInsetsFrameLayout;
-//    private ColorDrawable mStatusBarColorDrawable;
 
-//    private int mTopInset;
-    private View mPhotoContainerView;
     private ImageView mPhotoView;
-//    private int mScrollY;
-    private boolean mIsCard = false;
-//    private int mStatusBarFullOpacityBottom;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -81,22 +71,8 @@ public class ArticleDetailFragment extends Fragment implements
             mItemPosition = getArguments().getInt(ARG_ITEM_POS);
         }
 
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-//        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-//                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            Log.d(TAG, "setting Exit Transition...");
-//            this.setReturnTransition(TransitionInflater.from(getContext())
-//                    .inflateTransition(R.transition.article_detail_return_transition));
-//        }
-
-//        mMutedColor = getResources().getColor(R.color.primary_dark);
-    }
-
-    public ArticleDetailActivity getActivityCast() {
-        return (ArticleDetailActivity) getActivity();
     }
 
     @Override
@@ -117,7 +93,6 @@ public class ArticleDetailFragment extends Fragment implements
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-        mPhotoContainerView = mRootView.findViewById(R.id.photo_container);
 
         bindViews();
 
@@ -139,7 +114,6 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-//        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.example.xyzreader.data.ArticleLoader;
 
 /**
- * Created by Michael on 2/14/2017.
+ * Extracted from ArticleDetailActivity on 2/14/2017.
  */
 
 public class MyPagerAdapter extends SmartFragmentStatePagerAdapter {
@@ -31,11 +31,6 @@ public class MyPagerAdapter extends SmartFragmentStatePagerAdapter {
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
         Log.d(TAG, "MyPagerAdapter setPrimaryItem()");
-//            ArticleDetailFragment fragment = (ArticleDetailFragment) object;
-//            if (fragment != null) {
-//                mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
-////                updateUpButtonPosition();
-//            }
 
     }
 

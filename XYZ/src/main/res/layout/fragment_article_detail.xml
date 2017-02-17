@@ -1,16 +1,13 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-        android:id="@+id/scrollview"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-        android:orientation="vertical">
-
+    android:layout_height="match_parent" >
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/detail_inner_horiz_margin"
         android:layout_marginLeft="@dimen/article_body_width_margin"
         android:layout_marginStart="@dimen/article_body_width_margin"
         android:layout_marginEnd="@dimen/article_body_width_margin"
@@ -30,8 +27,6 @@
             android:textColor="@color/primary_text"
             android:textColorLink="@color/accent"
             android:textSize="@dimen/detail_body_text_size" />
-        <!--style="?android:attr/textAppearanceMedium" -->
-
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -41,10 +36,8 @@
         android:background="@color/photo_placeholder"
         android:orientation="vertical"
         android:elevation="8dp"
-        android:fitsSystemWindows="true"
         android:id="@+id/article_top_half"
-        android:maxHeight="@dimen/max_detail_image_height"
-        >
+        android:maxHeight="@dimen/max_detail_image_height" >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:minHeight="?attr/actionBarSize"
@@ -52,10 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-            <!--android:nestedScrollingEnabled="true"-->
-            <!--suppress AndroidLintContentDescription -->
 
             <FrameLayout
                 android:transitionGroup="true"
@@ -70,23 +60,19 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"
                     android:transitionName="@string/transition_image_view"/>
-                    <!--android:adjustViewBounds="true"-->
-                    <!--android:layout_gravity="center_horizontal"-->
 
-                    <LinearLayout
-                        android:id="@+id/meta_bar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="@dimen/detail_metabar_vert_padding"
-                        android:gravity="bottom"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/detail_metabar_vert_padding"
-                        android:paddingLeft="@dimen/detail_inner_horiz_margin"
-                        android:paddingRight="@dimen/detail_inner_horiz_margin"
-                        android:paddingTop="@dimen/detail_metabar_vert_padding">
-                        <!--android:layout_gravity="bottom"-->
-
+                <LinearLayout
+                    android:id="@+id/meta_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="@dimen/detail_metabar_vert_padding"
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/detail_metabar_vert_padding"
+                    android:paddingLeft="@dimen/detail_inner_horiz_margin"
+                    android:paddingRight="@dimen/detail_inner_horiz_margin"
+                    android:paddingTop="@dimen/detail_metabar_vert_padding">
 
                     <TextView
                         android:id="@+id/article_title"
@@ -94,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-condensed"
-                        android:lineSpacingMultiplier="0.9"
+                        android:lineSpacingMultiplier="@fraction/detail_title_line_spacing_multiplier"
                         android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
                         android:textColor="@color/white_text"
                         android:textSize="@dimen/detail_title_text_size"
@@ -112,12 +98,13 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <ImageButton android:id="@+id/share_fab"
+    <android.support.design.widget.FloatingActionButton android:id="@+id/share_fab"
         android:stateListAnimator="@anim/fab_state_list_anim"
-        android:background="@drawable/add_fab_background"
+        app:fabSize="normal"
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
+        app:rippleColor="@color/primary_light"
         android:layout_width="@dimen/fab_button_size"
         android:layout_height="@dimen/fab_button_size"
         android:src="@drawable/ic_share"

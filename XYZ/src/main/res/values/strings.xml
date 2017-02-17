@@ -9,6 +9,8 @@
 
     <string name="up">Up</string>
     <string name="transition_image_view">transition_image_view</string>
-    <string name="different_transition_name">bunk_string_to_eliminate_return_shared_element_transition</string>
+
+    <!--bunk_string_to_eliminate_return_shared_element_transition-->
+    <string name="different_transition_name">these_are_not_the_droids_you_are_looking_for</string>
 
 </resources>

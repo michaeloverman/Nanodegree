@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/card_margin"
+    android:layout_marginStart="@dimen/card_margin"
     android:layout_marginRight="@dimen/card_margin"
+    android:layout_marginEnd="@dimen/card_margin"
     android:layout_marginTop="@dimen/card_margin"
     android:layout_marginBottom="@dimen/card_margin"
     android:clickable="true"
@@ -19,7 +21,7 @@
         <com.example.xyzreader.ui.DynamicHeightNetworkImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
             android:background="@color/photo_placeholder"
             />
 
@@ -29,9 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/card_title_padding"
+            android:paddingStart="@dimen/card_title_padding"
             android:paddingTop="@dimen/card_title_padding"
             android:paddingRight="@dimen/card_title_padding"
-            android:paddingBottom="4dp"
+            android:paddingEnd="@dimen/card_title_padding"
+            android:paddingBottom="@dimen/card_title_bottom_padding"
             android:textColor="@color/white_text"
             android:ellipsize="end"
             android:maxLines="@integer/card_view_max_lines" />
@@ -42,11 +46,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/card_title_padding"
+            android:paddingStart="@dimen/card_title_padding"
             android:paddingRight="@dimen/card_title_padding"
+            android:paddingEnd="@dimen/card_title_padding"
             android:paddingBottom="@dimen/card_title_padding"
             android:textColor="@color/white_text"
             android:maxLines="1"
-            android:singleLine="true"
             android:ellipsize="end" />
     </LinearLayout>
 

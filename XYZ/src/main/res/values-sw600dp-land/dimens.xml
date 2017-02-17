@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="article_body_width_margin">200dp</dimen>
-
+    <dimen name="article_body_width_margin">180dp</dimen>
 
 </resources>

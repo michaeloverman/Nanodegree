@@ -21,7 +21,7 @@ import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 
 /**
- * Created by Michael on 2/7/2017.
+ * Extracted from ArticleListActivity on 2/7/2017.
  */
 
 class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
@@ -82,7 +82,7 @@ class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHold
         ImageLoader loader = ImageLoaderHelper.getInstance(mContext).getImageLoader();
         String imageString = mCursor.getString(ArticleLoader.Query.THUMB_URL);
         holder.thumbnailView.setImageUrl(imageString, loader);
-//        Picasso.with(mContext).load(imageString).into(holder.thumbnailView);
+
 
         loader.get(imageString, new ImageLoader.ImageListener() {
             @Override

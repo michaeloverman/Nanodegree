@@ -21,7 +21,7 @@
             android:paddingTop="@dimen/list_side_margin"
             android:paddingLeft="@dimen/list_side_margin"
             android:paddingRight="@dimen/list_side_margin"
-            android:paddingBottom="28dp"
+            android:paddingBottom="@dimen/list_bottom_margin"
             android:background="@color/primary_light"
             android:transitionGroup="false"
             />
@@ -30,9 +30,9 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="@dimen/main_appbar_layout_height"
         android:background="@color/primary"
-        android:elevation="8dp"
+        android:elevation="@dimen/main_appbar_elevation"
         android:fitsSystemWindows="true"
         android:gravity="bottom"
         android:minHeight="?attr/actionBarSize">
@@ -47,7 +47,6 @@
             android:nestedScrollingEnabled="true"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-            <!--android:background="@color/primary">-->
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -7,6 +7,6 @@
 
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="max_detail_image_height">300dp</dimen>
-    <dimen name="article_body_width_margin">100dp</dimen>
+    <dimen name="article_body_width_margin">85dp</dimen>
 
 </resources>

@@ -4,6 +4,7 @@
     <dimen name="detail_body_text_size">14sp</dimen>
 
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+    <item name="detail_title_line_spacing_multiplier" format="float" type="fraction">0.9</item>
 
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
@@ -13,5 +14,9 @@
     <dimen name="fab_button_size">56dp</dimen>
     <dimen name="max_detail_image_height">200dp</dimen>
     <dimen name="article_body_width_margin">0dp</dimen>
+    <dimen name="list_bottom_margin">28dp</dimen>
+    <dimen name="main_appbar_layout_height">112dp</dimen>
+    <dimen name="main_appbar_elevation">4dp</dimen>
+    <dimen name="card_title_bottom_padding">4dp</dimen>
 
 </resources>

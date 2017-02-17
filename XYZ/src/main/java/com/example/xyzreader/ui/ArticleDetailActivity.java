@@ -21,19 +21,11 @@ public class ArticleDetailActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ArticleDetailActivity.class.getSimpleName();
-    private static final String START_ID = "article_id";
-    private static final String SELECTED_ID = "selected_article_id";
     private Cursor mCursor;
     private long mStartId;
 
-    private long mSelectedItemId;
-    private int mSelectedItemUpButtonFloor = Integer.MAX_VALUE;
-    private int mTopInset;
-
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
-    private View mUpButtonContainer;
-    private View mUpButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +48,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mPagerAdapter);
-//        mPager.setPageMargin((int) TypedValue
-//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
-//        mPager.setPageMarginDrawable(new ColorDrawable(0x22000000));
 
         Log.d(TAG, "about to addOnPageChangeListener()");
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -75,75 +64,20 @@ public class ArticleDetailActivity extends AppCompatActivity
                 if (mCursor != null) {
                     mCursor.moveToPosition(position);
                 }
-                mSelectedItemId = mCursor.getLong(ArticleLoader.Query._ID);
-//                updateUpButtonPosition();
             }
         });
 
-//        mUpButtonContainer = findViewById(R.id.up_container);
-//
-//        mUpButton = findViewById(R.id.action_up);
-//        mUpButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                onSupportNavigateUp();
-//            }
-//        });
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            mUpButtonContainer.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
-//                @Override
-//                public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
-//                    view.onApplyWindowInsets(windowInsets);
-//                    mTopInset = windowInsets.getSystemWindowInsetTop();
-//                    mUpButtonContainer.setTranslationY(mTopInset);
-//                    updateUpButtonPosition();
-//                    return windowInsets;
-//                }
-//            });
-//        }
         Log.d(TAG, "about to get data from savedInstanceState");
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getData() != null) {
                 mStartId = ItemsContract.Items.getItemId(getIntent().getData());
-                mSelectedItemId = mStartId;
             }
         }
         else {
             mPagerAdapter.getRegisteredFragment(mPager.getCurrentItem());
-//            // do stuff here to retrieve the selected Item, I think
-//            mStartId = savedInstanceState.getLong(START_ID);
-//            mSelectedItemId = mStartId;
         }
 
-//        this.supportStartPostponedEnterTransition();
         Log.d(TAG, "onCreate() completed");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause() ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop() ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() ");
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        Log.d(TAG, "onSaveInstanceState()");
-//        outState.putLong(START_ID, mStartId);
-//        outState.putLong(SELECTED_ID, mSelectedItemId);
     }
 
     @Override
@@ -183,30 +117,6 @@ public class ArticleDetailActivity extends AppCompatActivity
         mCursor = null;
         mPagerAdapter.notifyDataSetChanged();
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Log.d(TAG, "onBackPressed()");
-//        overridePendingTransition(R.transition.article_detail_return_transition,
-//                R.transition.article_detail_enter_transition);
-////        TransitionInflater inflater = TransitionInflater.from(this);
-////        android.transition.Transition transition = inflater.inflateTransition(
-////                R.transition.article_detail_return_transition);
-////        TransitionManager.go(R.layout.activity_article_list, transition);
-//    }
-
-    //    public void onUpButtonFloorChanged(long itemId, ArticleDetailFragment fragment) {
-//        if (itemId == mSelectedItemId) {
-//            mSelectedItemUpButtonFloor = fragment.getUpButtonFloor();
-//            updateUpButtonPosition();
-//        }
-//    }
-//
-//    private void updateUpButtonPosition() {
-//        int upButtonNormalBottom = mTopInset + mUpButton.getHeight();
-//        mUpButton.setTranslationY(Math.min(mSelectedItemUpButtonFloor - upButtonNormalBottom, 0));
-//    }
 
 
 }
