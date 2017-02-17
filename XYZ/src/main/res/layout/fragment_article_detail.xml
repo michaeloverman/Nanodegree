@@ -7,12 +7,13 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/body_nested_view"
         android:layout_marginTop="@dimen/detail_inner_horiz_margin"
         android:layout_marginLeft="@dimen/article_body_width_margin"
         android:layout_marginStart="@dimen/article_body_width_margin"
         android:layout_marginEnd="@dimen/article_body_width_margin"
         android:layout_marginRight="@dimen/article_body_width_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior=".ui.FABScrollBehavior">
 
         <TextView
             android:id="@+id/article_body"
@@ -35,7 +36,7 @@
         android:layout_height="wrap_content"
         android:background="@color/photo_placeholder"
         android:orientation="vertical"
-        android:elevation="8dp"
+        android:elevation="@dimen/appbar_elevation"
         android:id="@+id/article_top_half"
         android:maxHeight="@dimen/max_detail_image_height" >
 
@@ -101,6 +102,7 @@
     <android.support.design.widget.FloatingActionButton android:id="@+id/share_fab"
         android:stateListAnimator="@anim/fab_state_list_anim"
         app:fabSize="normal"
+        app:layout_behavior=""
         android:layout_gravity="bottom|end"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
