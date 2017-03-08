@@ -1,0 +1,140 @@
+-- Merging decision tree log ---
+manifest
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:2:1-51:12
+	package
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:3:5-36
+	android:versionName
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:5:5-30
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:4:5-28
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:7:5-67
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:7:22-64
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:8:22-78
+uses-permission#android.permission.BROADCAST_STICKY
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:9:5-75
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:9:22-72
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:10:5-79
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:10:22-76
+application
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:12:5-49:19
+MERGED from [com.android.support:support-v13:25.1.1] C:\Users\Michael\.android\build-cache\57d9ae2bdaf8811ff174d1fd79e4d2fc27c7f78c\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:palette-v7:25.1.1] C:\Users\Michael\.android\build-cache\35566dc80677ee59a4d6534f0bda8c8045a76941\output\AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:cardview-v7:25.1.1] C:\Users\Michael\.android\build-cache\1794f9efb6b6485f4aff40541db3e55f1d238fa1\output\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:design:25.1.1] C:\Users\Michael\.android\build-cache\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:appcompat-v7:25.1.1] C:\Users\Michael\.android\build-cache\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.1.1] C:\Users\Michael\.android\build-cache\f2c474763b563fa4fb07814331da4f0038856c93\output\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-vector-drawable:25.1.1] C:\Users\Michael\.android\build-cache\d67fd2fe08b0dc7f9cdc57ef620a4c8fa108449e\output\AndroidManifest.xml:23:5-20
+MERGED from [com.android.support:transition:25.1.1] C:\Users\Michael\.android\build-cache\a7b96da2d39da2cda823c9e4611cb432d1654f57\output\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:25.1.1] C:\Users\Michael\.android\build-cache\33fed9cc84792c6328963abc32d1f9bf8ce6c5a3\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-fragment:25.1.1] C:\Users\Michael\.android\build-cache\987f365cff0fc45c139a778674c343748c308dcd\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-media-compat:25.1.1] C:\Users\Michael\.android\build-cache\8ce8b41bad0d0f9ec0af4780c15db1f74f5a194d\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-ui:25.1.1] C:\Users\Michael\.android\build-cache\5f379bc8ea1f6413b42322f5426519b9e2e04665\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-utils:25.1.1] C:\Users\Michael\.android\build-cache\83b2caf310f85386a3aaf324f1c0b5cabb39506c\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-compat:25.1.1] C:\Users\Michael\.android\build-cache\44f8504875fa7e6f82e5bd56552ccfb8273a9d4c\output\AndroidManifest.xml:25:5-20
+	android:label
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:15:9-41
+	android:allowBackup
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:13:9-35
+	android:icon
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:14:9-43
+	android:theme
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:16:9-43
+activity#com.example.xyzreader.ui.ArticleListActivity
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:18:9-26:20
+	android:label
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:20:13-45
+	android:theme
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:21:13-47
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:19:13-51
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:22:13-25:29
+action#android.intent.action.MAIN
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:23:17-69
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:23:25-66
+category#android.intent.category.LAUNCHER
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:24:17-77
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:24:27-74
+activity#com.example.xyzreader.ui.ArticleDetailActivity
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:28:9-40:20
+	android:parentActivityName
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:30:13-65
+	android:theme
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:31:13-54
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:29:13-53
+intent-filter#android.intent.action.VIEW+android.intent.category.DEFAULT
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:32:13-36:29
+action#android.intent.action.VIEW
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:33:17-69
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:33:25-66
+category#android.intent.category.DEFAULT
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:34:17-76
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:34:27-73
+data
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:35:17-100
+	android:mimeType
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:35:23-97
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:37:13-39:59
+	android:value
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:39:17-56
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:38:17-63
+service#com.example.xyzreader.data.UpdaterService
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:42:9-43:40
+	android:exported
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:43:13-37
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:42:18-53
+provider#com.example.xyzreader.data.ItemsProvider
+ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:45:9-47:40
+	android:authorities
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:46:13-56
+	android:exported
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:47:13-37
+	android:name
+		ADDED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml:45:19-53
+uses-sdk
+INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:support-v13:25.1.1] C:\Users\Michael\.android\build-cache\57d9ae2bdaf8811ff174d1fd79e4d2fc27c7f78c\output\AndroidManifest.xml:21:5-23:55
+MERGED from [com.android.support:palette-v7:25.1.1] C:\Users\Michael\.android\build-cache\35566dc80677ee59a4d6534f0bda8c8045a76941\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:cardview-v7:25.1.1] C:\Users\Michael\.android\build-cache\1794f9efb6b6485f4aff40541db3e55f1d238fa1\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:design:25.1.1] C:\Users\Michael\.android\build-cache\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\output\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:25.1.1] C:\Users\Michael\.android\build-cache\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:25.1.1] C:\Users\Michael\.android\build-cache\f2c474763b563fa4fb07814331da4f0038856c93\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.1.1] C:\Users\Michael\.android\build-cache\d67fd2fe08b0dc7f9cdc57ef620a4c8fa108449e\output\AndroidManifest.xml:21:5-43
+MERGED from [com.android.support:recyclerview-v7:25.1.1] C:\Users\Michael\.android\build-cache\546703a759fd4811030bcd8e4335ad8561972595\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.1.1] C:\Users\Michael\.android\build-cache\a7b96da2d39da2cda823c9e4611cb432d1654f57\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:25.1.1] C:\Users\Michael\.android\build-cache\33fed9cc84792c6328963abc32d1f9bf8ce6c5a3\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.1.1] C:\Users\Michael\.android\build-cache\987f365cff0fc45c139a778674c343748c308dcd\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.1.1] C:\Users\Michael\.android\build-cache\8ce8b41bad0d0f9ec0af4780c15db1f74f5a194d\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.1.1] C:\Users\Michael\.android\build-cache\5f379bc8ea1f6413b42322f5426519b9e2e04665\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.1.1] C:\Users\Michael\.android\build-cache\83b2caf310f85386a3aaf324f1c0b5cabb39506c\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:25.1.1] C:\Users\Michael\.android\build-cache\44f8504875fa7e6f82e5bd56552ccfb8273a9d4c\output\AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:support-v13:25.1.1] C:\Users\Michael\.android\build-cache\57d9ae2bdaf8811ff174d1fd79e4d2fc27c7f78c\output\AndroidManifest.xml:23:9-52
+	android:targetSdkVersion
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml
+		INJECTED from M:\Nanodegree\XYZ\src\main\AndroidManifest.xml

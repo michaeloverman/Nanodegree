@@ -1,0 +1,66 @@
+[
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_popup_exit.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_popup_exit.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_shrink_fade_out_from_bottom.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_fab_in.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_fab_in.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_grow_fade_in_from_bottom.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_fade_out.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_fade_out.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_out_bottom.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_fade_in.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_fade_in.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_bottom_sheet_slide_in.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_snackbar_out.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_snackbar_out.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_in_top.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_slide_in_top.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_out_top.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_slide_out_top.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_fab_out.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_fab_out.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_popup_enter.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_popup_enter.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\abc_slide_in_bottom.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\bc9f5d25e197b7aebe29a4c8623ffd423e39102f\\output\\res\\anim\\abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_snackbar_in.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_snackbar_in.xml"
+    },
+    {
+        "merged": "M:\\Nanodegree\\XYZ\\build\\intermediates\\res\\merged\\debug\\anim\\design_bottom_sheet_slide_out.xml",
+        "source": "C:\\Users\\Michael\\.android\\build-cache\\0f2b6ef9e40b37bfa60693ae500c7bcf1e52c627\\output\\res\\anim\\design_bottom_sheet_slide_out.xml"
+    }
+]
