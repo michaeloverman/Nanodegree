@@ -35,6 +35,7 @@ import android.widget.ProgressBar;
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.sync.SunshineSyncUtils;
+import com.example.android.sunshine.utilities.NotificationUtils;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements
     private int mPosition = RecyclerView.NO_POSITION;
 
     private ProgressBar mLoadingIndicator;
+
+//    GoogleApiClient mGoogleApiClient;
+//    private boolean mResolvingError;
 
 
     @Override
@@ -152,8 +156,25 @@ public class MainActivity extends AppCompatActivity implements
          */
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
 
+
         SunshineSyncUtils.initialize(this);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        if (!mResolvingError) {
+//            mGoogleApiClient.connect();
+//        }
+    }
+
+    @Override
+    protected void onStop() {
+//        if (!mResolvingError &&(mGoogleApiClient != null) && (mGoogleApiClient.isConnected())) {
+//            mGoogleApiClient.disconnect();
+//        }
+        super.onStop();
     }
 
     /**
@@ -235,11 +256,22 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+        Log.d(TAG, "onLoadFinished()");
 
         mForecastAdapter.swapCursor(data);
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
-        if (data.getCount() != 0) showWeatherDataView();
+        if (data.getCount() != 0) {
+            showWeatherDataView();
+
+            if(data.moveToFirst()) {
+                int weatherId = data.getInt(INDEX_WEATHER_CONDITION_ID);
+                int high = (int) data.getDouble(INDEX_WEATHER_MAX_TEMP);
+                int lo = (int) data.getDouble(INDEX_WEATHER_MIN_TEMP);
+                Log.d(TAG, "sending data to NotificationUtils.sendDataToWear()");
+                NotificationUtils.sendDataToWear(this, weatherId, high, lo);
+            }
+        }
     }
 
     /**
@@ -343,4 +375,17 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+//
+//    @Override
+//    public void onConnected(@Nullable Bundle bundle) {
+//        Log.d(TAG, "connected to wear device... I think");
+//        // TODO call on NotificationUtilities to send data?
+//    }
+//
+//    @Override
+//    public void onConnectionSuspended(int i) {
+//        Log.d(TAG, "onConnectionSuspended()");
+//    }
+
+
 }

@@ -9,17 +9,28 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.example.android.sunshine.DetailActivity;
 import com.example.android.sunshine.R;
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 
 public class NotificationUtils {
-
+    private static final String TAG = NotificationUtils.class.getSimpleName();
     /*
      * The columns of data that we are interested in displaying within our notification to let
      * the user know there is new weather data available.
@@ -45,6 +56,9 @@ public class NotificationUtils {
      * arbitrary and can be set to whatever you like. 3004 is in no way significant.
      */
     private static final int WEATHER_NOTIFICATION_ID = 3004;
+
+
+    private GoogleApiClient mGoogleApiClient;
 
     /**
      * Constructs and displays a notification for the newly updated weather for today.
@@ -135,10 +149,55 @@ public class NotificationUtils {
              * next time the weather is refreshed if we should show another notification.
              */
             SunshinePreferences.saveLastNotificationTime(context, System.currentTimeMillis());
+
+            sendDataToWear(context, weatherId, (int) high, (int) low);
+
+
         }
 
         /* Always close your cursor when you're done with it to avoid wasting resources. */
         todayWeatherCursor.close();
+    }
+
+    public static void sendDataToWear(Context context, int weatherId, int high, int low) {
+
+        Log.d(TAG, "sendDataToWear()");
+        GoogleApiClient client = new GoogleApiClient.Builder(context)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        Log.d("NotificationUtils", "ApiClient connected");
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                })
+                .build();
+        client.connect();
+
+
+        PutDataMapRequest mapRequest = PutDataMapRequest.create("/weather_data");
+        DataMap map = mapRequest.getDataMap();
+        map.putString("hiTemp", SunshineWeatherUtils.formatTemperature(context, high));
+        map.putString("loTemp", SunshineWeatherUtils.formatTemperature(context, low));
+        map.putInt("weatherId", weatherId);
+
+        PutDataRequest request = mapRequest.asPutDataRequest();
+        request.setUrgent();
+        Wearable.DataApi.putDataItem(client, request)
+                .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
+                    @Override
+                    public void onResult(@NonNull DataApi.DataItemResult dataItemResult) {
+                        if(!dataItemResult.getStatus().isSuccess()) {
+                            Log.d("DataRequestCallback", "failed to send weather data");
+                        } else {
+                            Log.d("DataRequestCallback", "weather data sent");
+                        }
+                    }
+                });
     }
 
     /**
@@ -175,4 +234,5 @@ public class NotificationUtils {
 
         return notificationText;
     }
+
 }

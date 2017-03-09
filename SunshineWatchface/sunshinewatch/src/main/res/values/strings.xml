@@ -1,5 +1,13 @@
-<resources>
-    <string name="app_name">SunshineWatch</string>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+
+
+    <string name="app_name">Sunshine</string>
     <string name="message">Watch face tapped</string>
-    <string name="my_digital_name">Sunshine Watch</string>
+    <string name="my_digital_name">The Sunshine Watch</string>
+
+    <string name="format_temperature">
+        <xliff:g id="temp">%d</xliff:g>\u00B0
+    </string>
+
 </resources>

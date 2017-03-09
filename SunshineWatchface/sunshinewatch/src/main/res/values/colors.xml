@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#03A9F4</color>
-    <color name="digital_text">#ffffff</color>
-    <color name="secondary_text">#aaffffff</color>
+    <color name="watch_background">#03A9F4</color>
+    <color name="watch_primary_text">#ffffff</color>
+    <color name="watch_secondary_text">#aaffffff</color>
 </resources>

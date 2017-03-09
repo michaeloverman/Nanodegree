@@ -37,6 +37,17 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
+        <!--<service-->
+            <!--android:name=".DataListener" >-->
+            <!--<intent-filter>-->
+                <!--&lt;!&ndash; listeners receive events that match the action and data filters &ndash;&gt;-->
+                <!--<action android:name="com.google.android.gms.wearable.DATA_CHANGED" />-->
+                <!--<action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />-->
+                <!--<data android:scheme="wear" android:host="*" android:pathPrefix="/weather_data"/>-->
+            <!--</intent-filter>-->
+
+        <!--</service>-->
     </application>
 
 </manifest>
