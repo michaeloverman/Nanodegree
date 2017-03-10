@@ -80,9 +80,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private ProgressBar mLoadingIndicator;
 
-//    GoogleApiClient mGoogleApiClient;
-//    private boolean mResolvingError;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,26 +153,10 @@ public class MainActivity extends AppCompatActivity implements
          */
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
 
-
         SunshineSyncUtils.initialize(this);
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        if (!mResolvingError) {
-//            mGoogleApiClient.connect();
-//        }
-    }
-
-    @Override
-    protected void onStop() {
-//        if (!mResolvingError &&(mGoogleApiClient != null) && (mGoogleApiClient.isConnected())) {
-//            mGoogleApiClient.disconnect();
-//        }
-        super.onStop();
-    }
 
     /**
      * Uses the URI scheme for showing a location found on a map in conjunction with
@@ -264,11 +245,12 @@ public class MainActivity extends AppCompatActivity implements
         if (data.getCount() != 0) {
             showWeatherDataView();
 
+            // send pertinent data to watchface
             if(data.moveToFirst()) {
                 int weatherId = data.getInt(INDEX_WEATHER_CONDITION_ID);
-                int high = (int) data.getDouble(INDEX_WEATHER_MAX_TEMP);
-                int lo = (int) data.getDouble(INDEX_WEATHER_MIN_TEMP);
-                Log.d(TAG, "sending data to NotificationUtils.sendDataToWear()");
+                double high = data.getDouble(INDEX_WEATHER_MAX_TEMP);
+                double lo = data.getDouble(INDEX_WEATHER_MIN_TEMP);
+
                 NotificationUtils.sendDataToWear(this, weatherId, high, lo);
             }
         }
@@ -375,17 +357,5 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
-//
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//        Log.d(TAG, "connected to wear device... I think");
-//        // TODO call on NotificationUtilities to send data?
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//        Log.d(TAG, "onConnectionSuspended()");
-//    }
-
 
 }

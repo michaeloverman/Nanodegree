@@ -6,8 +6,7 @@
     <string name="message">Watch face tapped</string>
     <string name="my_digital_name">The Sunshine Watch</string>
 
-    <string name="format_temperature">
-        <xliff:g id="temp">%d</xliff:g>\u00B0
-    </string>
+    <string name="dummy_temp_data_string">65°</string>
+    <string name="dummy_lo_temp_string">35°</string>
 
 </resources>

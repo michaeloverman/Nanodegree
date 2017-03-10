@@ -5,4 +5,15 @@
     <dimen name="digital_x_offset">15dp</dimen>
     <dimen name="digital_x_offset_round">25dp</dimen>
     <dimen name="digital_y_offset">90dp</dimen>
+    <dimen name="weather_icon_size">40dp</dimen>
+    <dimen name="watch_weather_margin">8dp</dimen>
+    <dimen name="watch_temp_font_size">35dp</dimen>
+    <dimen name="watch_temp_tween_margin">-4dp</dimen>
+    <dimen name="divider_top_margin">24dp</dimen>
+    <dimen name="divider_line_length">40dp</dimen>
+    <dimen name="divider_line_thickness">1dp</dimen>
+    <dimen name="date_view_bottom_margin">-12dp</dimen>
+    <dimen name="date_view_text_size">20dp</dimen>
+    <dimen name="time_text_size">50dp</dimen>
+    <dimen name="watch_temp_square_margin">4dp</dimen>
 </resources>

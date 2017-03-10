@@ -150,7 +150,8 @@ public class NotificationUtils {
              */
             SunshinePreferences.saveLastNotificationTime(context, System.currentTimeMillis());
 
-            sendDataToWear(context, weatherId, (int) high, (int) low);
+            // if it's worth sending a notification, it's worth telling the watchface...
+            sendDataToWear(context, weatherId, high, low);
 
 
         }
@@ -159,7 +160,16 @@ public class NotificationUtils {
         todayWeatherCursor.close();
     }
 
-    public static void sendDataToWear(Context context, int weatherId, int high, int low) {
+
+    /**
+     * Send the pertinent data to the watchface
+     *
+     * @param context
+     * @param weatherId - watchface has the icons, just need the id
+     * @param high - method takes the temp as double, but converts to string to send to wear
+     * @param low
+     */
+    public static void sendDataToWear(Context context, int weatherId, double high, double low) {
 
         Log.d(TAG, "sendDataToWear()");
         GoogleApiClient client = new GoogleApiClient.Builder(context)
@@ -198,6 +208,8 @@ public class NotificationUtils {
                         }
                     }
                 });
+
+
     }
 
     /**
