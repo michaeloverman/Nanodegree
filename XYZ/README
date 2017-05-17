@@ -1,0 +1,9 @@
+#XYZ Reader
+
+This was the "Make it Material" project. Starter files with basic functionality were provided. Small bugs needed to be addressed, but for the most part, my contributions were bringing the app into line with the Material Design guidelines. Some areas I addressed included:
+* organizing the color scheme
+* employing a Floating Action Button to share articles
+* incorporating Coordinator Layout in order to take advantage of various scrolling capabilities
+* unifying fonts throughout the app
+* adding a Collapsing Toolbar
+* adding animated transitions between the various activities and fragments
