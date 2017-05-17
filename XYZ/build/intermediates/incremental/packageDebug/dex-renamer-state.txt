@@ -1,0 +1,7 @@
+#Wed May 17 01:21:33 EDT 2017
+base.0=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_924e4b81b97866dd93927aafb8827c7e8bde27b2
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6cf284abacb54fa89d0582ecd5bfcc5715d6fefa\\classes.dex
+base.1=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_6cf284abacb54fa89d0582ecd5bfcc5715d6fefa
+file.0=M\:\\Nanodegree\\XYZ\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_924e4b81b97866dd93927aafb8827c7e8bde27b2\\classes.dex

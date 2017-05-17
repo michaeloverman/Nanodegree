@@ -74,6 +74,7 @@ public final class QuoteSyncJob {
                 return;
             }
 
+
             Map<String, Stock> quotes = YahooFinance.get(stockArray);
             Iterator<String> iterator = stockCopy.iterator();
 

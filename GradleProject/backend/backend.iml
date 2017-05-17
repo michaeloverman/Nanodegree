@@ -18,7 +18,7 @@
         <option name="HTTP_PORT" value="8080" />
         <option name="WAR_DIR" value="M:\Nanodegree\GradleProject\backend\build\exploded-app" />
         <option name="WEB_APP_DIR" value="M:\Nanodegree\GradleProject\backend\src\main\webapp" />
-        <option name="APPENGINE_SDKROOT" value="C:\Users\Michael\.gradle\appengine-sdk\appengine-java-sdk-1.9.42" />
+        <option name="APPENGINE_SDKROOT" value="M:\gradle-3.0\appengine-sdk\appengine-java-sdk-1.9.42" />
       </configuration>
     </facet>
   </component>
@@ -45,5 +45,6 @@
     <orderEntry type="library" exported="" name="appengine-endpoints-deps-1.9.42" level="project" />
     <orderEntry type="library" exported="" name="servlet-api-2.5" level="project" />
     <orderEntry type="library" exported="" name="appengine-api-1.0-sdk-1.9.42" level="project" />
+    <orderEntry type="library" exported="" name="backend.backend-android-endpoints" level="project" />
   </component>
 </module>

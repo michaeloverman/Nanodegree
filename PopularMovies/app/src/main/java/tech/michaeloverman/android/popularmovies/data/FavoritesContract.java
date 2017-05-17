@@ -14,7 +14,7 @@ public class FavoritesContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_FAVORITES = "favorites";
     
-    private FavoritesContract() {};
+    private FavoritesContract() {}
     
     public static final class FavoriteEntry implements BaseColumns {
         

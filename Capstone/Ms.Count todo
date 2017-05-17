@@ -1,0 +1,20 @@
+Things to do to my metronome:
+
+click sound options
+authorize database use
+make "select a program...." flash or something?
+odd-meter "loop" metronome
+add "floating" instructions for first time users (shared pref boolean??)
+widget - list of favorited programs
+way to mark programs as favorite (heart button?)
+local storage for custom programs and offline use
+Loader for passing data amongst views...
+
+
+LONGTERM
+create a way to edit programs
+start/stop button on Wear device
+cool graphics/icons - Joel? JMU prof?
+start mid-program
+
+drawer pattern for program selection?
